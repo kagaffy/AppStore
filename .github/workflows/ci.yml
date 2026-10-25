@@ -42,7 +42,7 @@ jobs:
             -project AppStore.xcodeproj \
             -scheme AppStore \
             -destination 'platform=iOS Simulator,name=iPhone 17' \
-            -only-testing:AppStoreTests \
+            -skip-testing:AppStoreUITests \
             -resultBundlePath TestResults.xcresult \
             | mint run xcbeautify --renderer github-actions
 

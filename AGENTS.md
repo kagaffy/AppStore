@@ -1,10 +1,10 @@
 # Agent Instructions — AppStore
 
-学習用の iPhone App Store クローン。現代化の全体像は [docs/modernization-plan.md](docs/modernization-plan.md) を正とする。
+学習用の iPhone App Store クローン。
 
 ## 現在のフェーズ
 
-Phase 単位で進める。未着手フェーズの大規模変更は、明示的に依頼されない限り行わない。
+Phase 1（レイヤ型マルチモジュール）実施中〜完了後は Phase 2。Phase 単位で進める。未着手フェーズの大規模変更は、明示的に依頼されない限り行わない。
 
 ## CLI / ツールチェーン
 
@@ -18,13 +18,13 @@ Phase 単位で進める。未着手フェーズの大規模変更は、明示�
 
 ## アーキテクチャ方針
 
-- Clean Architecture のレイヤ分割を優先（Phase 1）:
-  - `Domain` ← 外部依存なし（Entity / UseCase / Repository protocol）
-  - `Data` → Domain のみ依存（API / DTO / Repository 実装）
-  - `Presentation` → Domain のみ依存（ViewModel / SwiftUI）。**Data を import しない**
+- Clean Architecture のレイヤ分割（ローカル SPM）:
+  - `Packages/Domain` ← 外部依存なし（Entity / UseCase / Repository protocol）
+  - `Packages/AppData` → Domain のみ依存（API / DTO / Repository 実装）。**モジュール名は `AppData`（Foundation.`Data` との衝突回避）**
+  - `Packages/Presentation` → Domain のみ依存（ViewModel / SwiftUI）。**AppData を import しない**
   - App target → Composition Root（DI・ナビ組み立て）
 - Phase 5 でフィーチャーモジュールへ垂直分割する予定。レイヤが安定するまで Feature 分割しない
-- 依存規則: `App → Presentation → Domain ← Data`
+- 依存規則: `App → Presentation → Domain ← AppData`
 
 ## UI / 設計
 
@@ -48,8 +48,7 @@ Phase 単位で進める。未着手フェーズの大規模変更は、明示�
 
 ## API
 
-- ランキング RSS 差し替えの調査結果は [docs/rss-api-replacement.md](docs/rss-api-replacement.md)
-- 実装は Phase 2。Repository 境界の外に URL ハードコードを増やさない
+- ランキング RSS 差し替えは Phase 2。Repository 境界の外に URL ハードコードを増やさない
 
 ## 変更の進め方
 

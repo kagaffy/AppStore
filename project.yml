@@ -71,10 +71,21 @@ targets:
   AppStore:
     type: application
     platform: iOS
-    sources: AppStore
+    sources:
+      - path: AppStore
+        excludes:
+          - Entity
+    scheme:
+      testTargets:
+        - AppStoreTests
+        - package: Domain/DomainTests
+        - package: AppData/AppDataTests
+        - package: Presentation/PresentationTests
+      gatherCoverageData: false
     dependencies:
-      - package: SwiftyJSON
-      - package: SwiftDate
+      - package: Domain
+      - package: AppData
+      - package: Presentation
       - package: Kingfisher
       - package: Hydra
     settings:
@@ -87,7 +98,7 @@ targets:
           - "@executable_path/Frameworks"
         PRODUCT_BUNDLE_IDENTIFIER: "com.yoshiki.AppStore"
         PRODUCT_NAME: "$(TARGET_NAME)"
-        # Swift 6 concurrency 移行は Phase 1–2 で実施（現状 UIKit が MainActor エラーになる）
+        # Swift 6 concurrency 移行は Phase 2 で実施（現状 UIKit が MainActor エラーになる）
         SWIFT_VERSION: "5.0"
         TARGETED_DEVICE_FAMILY: "1,2"
   AppStoreTests:
@@ -131,25 +142,13 @@ targets:
         SWIFT_VERSION: "5.0"
         TARGETED_DEVICE_FAMILY: "1,2"
         TEST_TARGET_NAME: "AppStore"
-schemes:
-  AppStore:
-    build:
-      targets:
-        AppStore: all
-        AppStoreTests: [test]
-        AppStoreUITests: [test]
-    test:
-      targets:
-        - AppStoreTests
-        - AppStoreUITests
-      gatherCoverageData: false
 packages:
-  SwiftyJSON:
-    url: https://github.com/SwiftyJSON/SwiftyJSON
-    from: 5.0.0
-  SwiftDate:
-    url: https://github.com/malcommac/SwiftDate
-    from: 6.3.1
+  Domain:
+    path: Packages/Domain
+  AppData:
+    path: Packages/AppData
+  Presentation:
+    path: Packages/Presentation
   Kingfisher:
     url: https://github.com/onevcat/Kingfisher
     from: 5.15.8

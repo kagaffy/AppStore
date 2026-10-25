@@ -6,6 +6,8 @@
 //  Copyright © 2019 塚田良輝. All rights reserved.
 //
 
+import AppData
+import Domain
 import Foundation
 
 class AppsIntroductionVC: IntroductionVC {

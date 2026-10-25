@@ -1,44 +1,9 @@
-//
-//  AppDetails.swift
-//  AppStore
-//
-//  Created by 塚田良輝 on 2019/12/26.
-//
-
+import Domain
 import Foundation
-import SwiftDate
 import SwiftyJSON
 
-@available(*, deprecated)
-public struct AppDetails {
-    public let id: Int
-    public let artistId: Int
-    public var screenshotUrls: [String]
-    public var iconUrl: String
-    public var advisories: [String]
-    public var supportedDevices: [String]
-    public var languageCodes: [String]
-    public var fileSizeBytes: String
-    public var ageLimit: String
-    public var releaseDate: String
-    public var releaseNotes: String?
-    public var primaryGenreId: Int
-    public var sellerName: String
-    public var genres: [String]
-    public var currentVersionReleaseDateString: String
-    public var currentVersionReleaseDate: DateInRegion? {
-        DateInRegion(currentVersionReleaseDateString)
-    }
-
-    public var primaryGenreName: String
-    public var price: String
-    public var version: String
-    public var trackName: String
-    public var description: String
-    public var averageUserRating: Float
-    public var userRatingCount: Int
-
-    public init?(_ json: JSON?) {
+enum AppDetailsDTO {
+    static func make(from json: JSON?) -> AppDetails? {
         guard let json else { return nil }
 
         guard let id = json["trackId"].int else { return nil }
@@ -63,83 +28,58 @@ public struct AppDetails {
         guard let averageUserRating = json["averageUserRating"].float else { return nil }
         guard let userRatingCount = json["userRatingCount"].int else { return nil }
 
-        self.id = id
-        self.artistId = artistId
-        self.screenshotUrls = screenshotUrls.compactMap(\.string)
-        self.iconUrl = iconUrl
-        self.advisories = advisories.compactMap(\.string)
-        self.supportedDevices = supportedDevices.compactMap(\.string)
-        self.languageCodes = languageCodes.compactMap(\.string)
-        self.fileSizeBytes = fileSizeBytes
-        self.ageLimit = ageLimit
-        self.releaseDate = releaseDate
-        releaseNotes = json["releaseNotes"].string
-        self.primaryGenreId = primaryGenreId
-        self.sellerName = sellerName
-        self.genres = genres.compactMap(\.string)
-        self.currentVersionReleaseDateString = currentVersionReleaseDateString
-        self.primaryGenreName = primaryGenreName
-        self.price = price
-        self.version = version
-        self.trackName = trackName
-        self.description = description
-        self.averageUserRating = averageUserRating
-        self.userRatingCount = userRatingCount
+        return AppDetails(
+            id: id,
+            artistId: artistId,
+            screenshotUrls: screenshotUrls.compactMap(\.string),
+            iconUrl: iconUrl,
+            advisories: advisories.compactMap(\.string),
+            supportedDevices: supportedDevices.compactMap(\.string),
+            languageCodes: languageCodes.compactMap(\.string),
+            fileSizeBytes: fileSizeBytes,
+            ageLimit: ageLimit,
+            releaseDate: releaseDate,
+            releaseNotes: json["releaseNotes"].string,
+            primaryGenreId: primaryGenreId,
+            sellerName: sellerName,
+            genres: genres.compactMap(\.string),
+            currentVersionReleaseDateString: currentVersionReleaseDateString,
+            primaryGenreName: primaryGenreName,
+            price: price,
+            version: version,
+            trackName: trackName,
+            description: description,
+            averageUserRating: averageUserRating,
+            userRatingCount: userRatingCount
+        )
     }
 
     static func load(_ array: [JSON]) -> [AppDetails] {
-        array.compactMap { AppDetails($0) }
+        array.compactMap { make(from: $0) }
     }
 }
 
-public class GetAppDetails: PromiseOperation<AppDetails?> {
-    public init(id: String) {
-        super.init()
-
-        url = URLMaker.detail(id: id)
-
-        jsonResponse = { json in
-            AppDetails(json["results"].array?.first)
-        }
-    }
-}
-
-public class GetSearchResults: PromiseOperation<[AppDetails]> {
-    public init(term: String) {
-        super.init()
-
-        url = URLMaker.search(term: term)
-
-        jsonResponse = { json in
-            AppDetails.load(json["results"].arrayValue)
-        }
-    }
-}
-
-struct AppDetailsModel: Decodable, Identifiable {
-    let id: Int
-    var artistId: Int
-    var screenshotUrls: [URL]
-    var iconUrl: URL
-    var supportedDevices: [String]
-    var languageCodes: [String]
-    var fileSizeBytes: String
-    var ageLimit: String
-    var releaseDate: String
-    var releaseNotes: String?
-    var sellerName: String
-    var genres: [String]
-    var currentVersionReleaseDateString: String
-    var currentVersionReleaseDate: DateInRegion? {
-        DateInRegion(currentVersionReleaseDateString)
-    }
-
-    var price: String
-    var version: String
-    var trackName: String
-    var description: String
-    var averageUserRating: Float
-    var userRatingCount: Int
+/// Codable DTO used by DomainTests / DataTests (lookup result item shape).
+public struct AppDetailsModel: Decodable, Identifiable, Equatable {
+    public let id: Int
+    public var artistId: Int
+    public var screenshotUrls: [URL]
+    public var iconUrl: URL
+    public var supportedDevices: [String]
+    public var languageCodes: [String]
+    public var fileSizeBytes: String
+    public var ageLimit: String
+    public var releaseDate: String
+    public var releaseNotes: String?
+    public var sellerName: String
+    public var genres: [String]
+    public var currentVersionReleaseDateString: String
+    public var price: String
+    public var version: String
+    public var trackName: String
+    public var description: String
+    public var averageUserRating: Float
+    public var userRatingCount: Int
 
     private enum Key: String, CodingKey {
         case id = "trackId"
@@ -163,7 +103,7 @@ struct AppDetailsModel: Decodable, Identifiable {
         case userRatingCount
     }
 
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: Key.self)
         id = try container.decode(Int.self, forKey: .id)
         artistId = try container.decode(Int.self, forKey: .artistId)
@@ -184,5 +124,32 @@ struct AppDetailsModel: Decodable, Identifiable {
         description = try container.decode(String.self, forKey: .description)
         averageUserRating = try container.decode(Float.self, forKey: .averageUserRating)
         userRatingCount = try container.decode(Int.self, forKey: .userRatingCount)
+    }
+
+    public func toDomain() -> AppDetails {
+        AppDetails(
+            id: id,
+            artistId: artistId,
+            screenshotUrls: screenshotUrls.map(\.absoluteString),
+            iconUrl: iconUrl.absoluteString,
+            advisories: [],
+            supportedDevices: supportedDevices,
+            languageCodes: languageCodes,
+            fileSizeBytes: fileSizeBytes,
+            ageLimit: ageLimit,
+            releaseDate: releaseDate,
+            releaseNotes: releaseNotes,
+            primaryGenreId: 0,
+            sellerName: sellerName,
+            genres: genres,
+            currentVersionReleaseDateString: currentVersionReleaseDateString,
+            primaryGenreName: "",
+            price: price,
+            version: version,
+            trackName: trackName,
+            description: description,
+            averageUserRating: averageUserRating,
+            userRatingCount: userRatingCount
+        )
     }
 }

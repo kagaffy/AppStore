@@ -1,5 +1,7 @@
 .PHONY: bootstrap init generate open format format-lint test
 
+DESTINATION ?= platform=iOS Simulator,name=iPhone 17
+
 bootstrap:
 	mint bootstrap
 
@@ -21,6 +23,6 @@ test: generate
 	set -o pipefail; xcodebuild test \
 		-project AppStore.xcodeproj \
 		-scheme AppStore \
-		-destination 'platform=iOS Simulator,name=iPhone 17' \
-		-only-testing:AppStoreTests \
+		-destination '$(DESTINATION)' \
+		-skip-testing:AppStoreUITests \
 		| mint run xcbeautify

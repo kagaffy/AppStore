@@ -6,6 +6,7 @@
 //  Copyright © 2019 塚田良輝. All rights reserved.
 //
 
+import Domain
 import UIKit
 
 protocol AppDetailsUpdateCellDelegate: AnyObject {
@@ -48,7 +49,7 @@ final class AppDetailsUpdateCell: UICollectionViewCell, CollectionViewCellPresen
         guard let appDetails = data else { return }
 
         newestVersionLabel.text = "バージョン\(appDetails.version)"
-        updateDateLabel.text = appDetails.currentVersionReleaseDate?.toISO([.withFullDate])
+        updateDateLabel.text = appDetails.currentVersionReleaseDateDisplay
         updateDetailsLabel.text = appDetails.releaseNotes
     }
 }
