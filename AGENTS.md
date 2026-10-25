@@ -13,7 +13,8 @@ Phase 1（レイヤ型マルチモジュール）実施中〜完了後は Phase 
 - フォーマット: `make format` / CI 相当は `make format-lint`
 - テスト: `make test`（unit test のみ。UI test は後回し）
 - `brew install xcodegen` やグローバル CLI 前提の手順を新たに書かない（Mint 本体の brew インストールは可）
-- `project.yml` 変更後は必ず `make generate`
+- `project.yml` 変更後は必ず `make generate`（`postGenCommand` でローカル SPM の package バックリンクを修正する。Xcode.app の Missing package product 対策）
+- Xcode でパッケージソースを見るときは Project Navigator の `Packages` グループ、または各 Package.swift から開く
 - 言語モードは当面 Swift 5（`SWIFT_VERSION: 5.0`）。Swift 6 化は Phase 1–2
 
 ## アーキテクチャ方針
