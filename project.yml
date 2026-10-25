@@ -1,4 +1,11 @@
 name: AppStore
+options:
+  # XcodeGen omits local-package backlinks; Xcode.app needs them (issue #1549).
+  postGenCommand: "python3 script/fix-local-package-backlinks.py"
+  localPackagesGroup: Packages
+fileGroups:
+  # Make package sources browsable in the Project Navigator.
+  - Packages
 configs:
   Debug: debug
   Release: release
@@ -71,12 +78,29 @@ targets:
   AppStore:
     type: application
     platform: iOS
-    sources: AppStore
+    sources:
+      - path: AppStore
+        excludes:
+          - Entity
+    scheme:
+      # AppStoreTests は TEST_HOST 起動が必要で CI シミュレータが不安定なため、
+      # ロジック検証はパッケージテストに寄せる（ホスト不要）。
+      testTargets:
+        - package: Domain/DomainTests
+        - package: AppData/AppDataTests
+        - package: Presentation/PresentationTests
+      gatherCoverageData: false
     dependencies:
-      - package: SwiftyJSON
-      - package: SwiftDate
+      - package: Domain
+        product: Domain
+      - package: AppData
+        product: AppData
+      - package: Presentation
+        product: Presentation
       - package: Kingfisher
+        product: Kingfisher
       - package: Hydra
+        product: Hydra
     settings:
       base:
         ASSETCATALOG_COMPILER_APPICON_NAME: "AppIcon"
@@ -87,7 +111,7 @@ targets:
           - "@executable_path/Frameworks"
         PRODUCT_BUNDLE_IDENTIFIER: "com.yoshiki.AppStore"
         PRODUCT_NAME: "$(TARGET_NAME)"
-        # Swift 6 concurrency 移行は Phase 1–2 で実施（現状 UIKit が MainActor エラーになる）
+        # Swift 6 concurrency 移行は Phase 2 で実施（現状 UIKit が MainActor エラーになる）
         SWIFT_VERSION: "5.0"
         TARGETED_DEVICE_FAMILY: "1,2"
   AppStoreTests:
@@ -131,25 +155,13 @@ targets:
         SWIFT_VERSION: "5.0"
         TARGETED_DEVICE_FAMILY: "1,2"
         TEST_TARGET_NAME: "AppStore"
-schemes:
-  AppStore:
-    build:
-      targets:
-        AppStore: all
-        AppStoreTests: [test]
-        AppStoreUITests: [test]
-    test:
-      targets:
-        - AppStoreTests
-        - AppStoreUITests
-      gatherCoverageData: false
 packages:
-  SwiftyJSON:
-    url: https://github.com/SwiftyJSON/SwiftyJSON
-    from: 5.0.0
-  SwiftDate:
-    url: https://github.com/malcommac/SwiftDate
-    from: 6.3.1
+  Domain:
+    path: Packages/Domain
+  AppData:
+    path: Packages/AppData
+  Presentation:
+    path: Packages/Presentation
   Kingfisher:
     url: https://github.com/onevcat/Kingfisher
     from: 5.15.8
