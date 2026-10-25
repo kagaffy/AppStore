@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol CollectionViewCellPresenter: class {
+protocol CollectionViewCellPresenter: AnyObject {
     associatedtype T
 
     var data: T? { get set }

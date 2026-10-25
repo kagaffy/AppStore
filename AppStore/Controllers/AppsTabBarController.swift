@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol ScrollableToTop: class {
+protocol ScrollableToTop: AnyObject {
     var scrollableView: Any? { get }
     func scrollToTop()
 }

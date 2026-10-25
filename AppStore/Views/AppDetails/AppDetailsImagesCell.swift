@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol AppDetailsImageCellDelegate: class {
+protocol AppDetailsImageCellDelegate: AnyObject {
     func appDetailsImageCell(estimatedSize size: CGSize?)
 }
 
@@ -51,7 +51,7 @@ extension AppDetailsImagesCell: UICollectionViewDataSource, UICollectionViewDele
     //
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return data?.screenshotUrls.count ?? 0
+        data?.screenshotUrls.count ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -71,17 +71,17 @@ extension AppDetailsImagesCell: UICollectionViewDataSource, UICollectionViewDele
     //
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return firstImage?.size ?? .zero
+        firstImage?.size ?? .zero
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return .init(top: 0, left: 20, bottom: 0, right: 20)
+        .init(top: 0, left: 20, bottom: 0, right: 20)
     }
 }
 
 extension AppDetailsImagesCell: CollectionViewRegister {
     var cellTypes: [UICollectionViewCell.Type] {
-        return [
+        [
             AppDetailsImagesImageCell.self,
         ]
     }

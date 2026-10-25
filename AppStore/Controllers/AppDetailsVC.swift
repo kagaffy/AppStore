@@ -81,15 +81,15 @@ extension AppDetailsVC: UICollectionViewDataSource, UICollectionViewDelegate, UI
     //
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return SectionHandler.allCases.count
+        SectionHandler.allCases.count
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch SectionHandler(section) {
         case .information:
-            return AppDetailsInformationCell.CellKindPresenter.allCases.count
+            AppDetailsInformationCell.CellKindPresenter.allCases.count
         default:
-            return SectionHandler.defaultNumberOfItems
+            SectionHandler.defaultNumberOfItems
         }
     }
 
@@ -120,7 +120,7 @@ extension AppDetailsVC: UICollectionViewDataSource, UICollectionViewDelegate, UI
             cell.delegate = self
             return cell
         case .information:
-            guard let appDetails = appDetails, let cellKind = AppDetailsInformationCell.CellKindPresenter(indexPath.item) else { return UICollectionViewCell() }
+            guard let appDetails, let cellKind = AppDetailsInformationCell.CellKindPresenter(indexPath.item) else { return UICollectionViewCell() }
 
             let cell = AppDetailsInformationCell.dequeue(from: collectionView, for: indexPath, with: (appDetails, cellKind))
             return cell
@@ -167,8 +167,8 @@ extension AppDetailsVC: UICollectionViewDataSource, UICollectionViewDelegate, UI
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         switch SectionHandler(section) {
         case .information:
-            return 0
-        default: return 0
+            0
+        default: 0
         }
     }
 
@@ -211,23 +211,23 @@ extension AppDetailsVC {
         case information
 
         static var imagesIndexPath: IndexPath {
-            return .init(item: defaultNumberOfItems - 1, section: imagesSection)
+            .init(item: defaultNumberOfItems - 1, section: imagesSection)
         }
 
         static var imagesSection: Int {
-            return images.rawValue
+            images.rawValue
         }
 
         static var textSection: Int {
-            return text.rawValue
+            text.rawValue
         }
 
         static var reviewsSection: Int {
-            return reviews.rawValue
+            reviews.rawValue
         }
 
         static var updateSection: Int {
-            return update.rawValue
+            update.rawValue
         }
 
         static let defaultNumberOfItems = 1
@@ -248,7 +248,7 @@ extension AppDetailsVC {
 
 extension AppDetailsVC: CollectionViewRegister {
     var cellTypes: [UICollectionViewCell.Type] {
-        return [
+        [
             AppDetailsHeaderCell.self,
             AppDetailsImagesCell.self,
             AppDetailsTextCell.self,
@@ -259,7 +259,7 @@ extension AppDetailsVC: CollectionViewRegister {
     }
 
     var headerCellTypes: [UICollectionReusableView.Type] {
-        return [
+        [
             AppDetailsSectionHeaderCell.self,
         ]
     }

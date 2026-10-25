@@ -39,7 +39,7 @@ extension IntroductionListUpVC: UICollectionViewDataSource, UICollectionViewDele
     //
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return data.appsGroup?.apps.count ?? 0
+        data.appsGroup?.apps.count ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -70,11 +70,11 @@ extension IntroductionListUpVC: UICollectionViewDataSource, UICollectionViewDele
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return DataSet.cellEdge
+        DataSet.cellEdge
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return DataSet.cellSpacing
+        DataSet.cellSpacing
     }
 }
 
@@ -86,15 +86,15 @@ extension IntroductionListUpVC {
         static let iconImageWidth: CGFloat = 95
         static let iconImageSpacing: CGFloat = 15
         static func cellWidth(_ collectionViewWidth: CGFloat) -> CGFloat {
-            return collectionViewWidth - cellEdge.left - cellEdge.right
+            collectionViewWidth - cellEdge.left - cellEdge.right
         }
 
         static var cellHeight: CGFloat {
-            return iconImageWidth + iconImageSpacing * 2
+            iconImageWidth + iconImageSpacing * 2
         }
 
         static var cellEdge: UIEdgeInsets {
-            return .init(
+            .init(
                 top: 0,
                 left: 20,
                 bottom: 0,
@@ -108,7 +108,7 @@ extension IntroductionListUpVC {
 
 extension IntroductionListUpVC: CollectionViewRegister {
     var cellTypes: [UICollectionViewCell.Type] {
-        return [
+        [
             IntroductionListUpCell.self,
         ]
     }

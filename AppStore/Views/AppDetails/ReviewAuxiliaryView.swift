@@ -29,7 +29,7 @@ class ReviewAuxiliaryView: UIView {
     }
 
     func apply(appDetails: AppDetails?) {
-        guard let appDetails = appDetails else { return }
+        guard let appDetails else { return }
 
         averageRatingLabel.text = String(appDetails.averageUserRating)
         let formatter = NumberFormatter()

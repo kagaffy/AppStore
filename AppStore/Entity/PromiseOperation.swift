@@ -21,11 +21,11 @@ public class PromiseOperation<Value> {
     }
 
     public func execute(in context: Context? = nil) -> Promise<Value> {
-        return .init(in: context) { resolve, reject, _ in
+        .init(in: context) { resolve, reject, _ in
             URLSession.shared.dataTask(with: self.url!) { data, _, error in
-                if let error = error {
+                if let error {
                     reject(error)
-                } else if let data = data {
+                } else if let data {
                     let json = JSON(data)
                     let object = self.jsonResponse!(json)
                     resolve(object)
@@ -46,11 +46,11 @@ public class PromiseOperationModel<Value> {
     }
 
     public func execute(in context: Context? = nil) -> Promise<Value> {
-        return .init(in: context) { resolve, reject, _ in
+        .init(in: context) { resolve, reject, _ in
             URLSession.shared.dataTask(with: self.url!) { data, _, error in
-                if let error = error {
+                if let error {
                     reject(error)
-                } else if let data = data {
+                } else if let data {
                     let object = self.jsonResponse!(data)
                     resolve(object)
                 }

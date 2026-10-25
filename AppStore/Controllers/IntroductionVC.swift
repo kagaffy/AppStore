@@ -14,7 +14,7 @@ class IntroductionVC: UIViewController {
 
     var data: DataSet = .empty
     var accessUrls: [URL] {
-        return [
+        [
             // Must override `accessUrls` in IntroductionVC subclass.
         ]
     }
@@ -46,7 +46,7 @@ class IntroductionVC: UIViewController {
     func fetchApps() {
         accessUrls.forEach { url in
             GetAppsGroup(url: url).execute(in: .background).then(in: .main) { [weak self] appsGroup in
-                if let appsGroup = appsGroup {
+                if let appsGroup {
                     self?.data.appsGroups.append(appsGroup)
                     let indexPath = IndexPath(row: (self?.data.appsGroups.count ?? 1) - 1, section: SectionHandler.appsGroupSection)
                     self?.collectionView.insertItems(at: [indexPath])
@@ -62,16 +62,16 @@ extension IntroductionVC: UICollectionViewDataSource, UICollectionViewDelegate, 
     //
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return SectionHandler.allCases.count
+        SectionHandler.allCases.count
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch SectionHandler(section) {
         case .appsGroupHeader?:
-            return 0
+            0
         case .appsGroup?:
-            return data.appsGroups.count
-        default: return 0
+            data.appsGroups.count
+        default: 0
         }
     }
 
@@ -112,7 +112,7 @@ extension IntroductionVC: UICollectionViewDataSource, UICollectionViewDelegate, 
 
 extension IntroductionVC: AppsGroupCellDelegate {
     var classType: String {
-        return String(describing: type(of: self))
+        String(describing: type(of: self))
     }
 
     func appsGroupCell(allDisplayButtonTappedWith appsGroup: AppsGroup?) {
@@ -132,14 +132,14 @@ extension IntroductionVC {
         static let appsGroupTitleLabelHeight: CGFloat = 30
         static let appsGroupTitleLabelSpacing: CGFloat = 10
         static var appsGroupCellHeight: CGFloat {
-            return appsGroupTitleLabelHeight
+            appsGroupTitleLabelHeight
                 + appsGroupTitleLabelSpacing * 2
                 + appsCarouselCellHeight * 3
                 + appsCarouselCellVerticalSpacing * 2
         }
 
         static var appsCarouselCellHeight: CGFloat {
-            return appsCarouselImageWidth + appsCarouselImageSpacing * 2
+            appsCarouselImageWidth + appsCarouselImageSpacing * 2
         }
 
         static let appsCarouselImageWidth: CGFloat = 70
@@ -149,7 +149,7 @@ extension IntroductionVC {
         static let appsCarouselCellHorizontalSectionInset: CGFloat = 20
 
         static func appsCarouselCellWidth(_ width: CGFloat) -> CGFloat {
-            return width - appsCarouselCellHorizontalSectionInset * 2
+            width - appsCarouselCellHorizontalSectionInset * 2
         }
     }
 }
@@ -160,7 +160,7 @@ extension IntroductionVC {
         case appsGroup
 
         static var appsGroupSection: Int {
-            return appsGroup.rawValue
+            appsGroup.rawValue
         }
 
         init?(_ section: Int) {
@@ -186,7 +186,7 @@ extension IntroductionVC {
 
 extension IntroductionVC: CollectionViewRegister {
     var cellTypes: [UICollectionViewCell.Type] {
-        return [
+        [
             AppsGroupCell.self,
         ]
     }
@@ -194,6 +194,6 @@ extension IntroductionVC: CollectionViewRegister {
 
 extension IntroductionVC: ScrollableToTop {
     var scrollableView: Any? {
-        return collectionView
+        collectionView
     }
 }

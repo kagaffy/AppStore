@@ -10,7 +10,7 @@ import Foundation
 
 class AppsIntroductionVC: IntroductionVC {
     override var accessUrls: [URL] {
-        return [
+        [
             URLMaker.recommendedNewApps,
             URLMaker.topFree,
             URLMaker.ipadTopFree,

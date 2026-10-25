@@ -25,7 +25,7 @@ final class AppDetailsReviewsCell: UICollectionViewCell, CollectionViewCellPrese
     }
 
     static func estimatedSize(with width: CGFloat) -> CGSize {
-        return .init(width: width, height: 375)
+        .init(width: width, height: 375)
     }
 
     //
@@ -46,7 +46,7 @@ extension AppDetailsReviewsCell: UICollectionViewDataSource, UICollectionViewDel
     //
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return min(data?.count ?? 0, 6)
+        min(data?.count ?? 0, 6)
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -69,13 +69,13 @@ extension AppDetailsReviewsCell: UICollectionViewDataSource, UICollectionViewDel
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return .init(top: 0, left: 20, bottom: 0, right: 20)
+        .init(top: 0, left: 20, bottom: 0, right: 20)
     }
 }
 
 extension AppDetailsReviewsCell: CollectionViewRegister {
     var cellTypes: [UICollectionViewCell.Type] {
-        return [
+        [
             AppDetailsReviewCell.self,
         ]
     }

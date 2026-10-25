@@ -14,7 +14,7 @@ final class IntroductionListUpCell: UICollectionViewCell, CollectionViewCellPres
     @IBOutlet var getButton: UIButton!
 
     var iconWidth: CGFloat {
-        return IntroductionListUpVC.DataSet.iconImageWidth
+        IntroductionListUpVC.DataSet.iconImageWidth
     }
 
     func insertSectionLineIfNeeded(_ required: Bool) {

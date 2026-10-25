@@ -19,11 +19,11 @@ final class AppDetailsInformationCell: UICollectionViewCell, CollectionViewCellP
 //    }
 
     var title: String? {
-        return cellKind?.title
+        cellKind?.title
     }
 
     static func estimatedSize(with width: CGFloat) -> CGSize {
-        return .init(width: width, height: 50)
+        .init(width: width, height: 50)
     }
 
     //
@@ -95,20 +95,20 @@ extension AppDetailsInformationCell {
         var title: String {
             switch self {
             case .distributor:
-                return "販売元"
+                "販売元"
             case .dataSize:
-                return "サイズ"
+                "サイズ"
             case .category:
-                return "カテゴリ"
+                "カテゴリ"
             case .compatible:
-                return "互換性"
+                "互換性"
             case .language:
-                return "言語"
+                "言語"
             case .ageLimit:
-                return "年齢制限"
+                "年齢制限"
             case .billing:
-                return "App内課金"
-            default: return ""
+                "App内課金"
+            default: ""
             }
         }
     }

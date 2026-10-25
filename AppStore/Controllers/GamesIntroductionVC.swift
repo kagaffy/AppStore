@@ -10,7 +10,7 @@ import Foundation
 
 class GamesIntroductionVC: IntroductionVC {
     override var accessUrls: [URL] {
-        return [
+        [
             URLMaker.recommendedNewGames,
             URLMaker.topFreeGames,
             URLMaker.topPaidGames,

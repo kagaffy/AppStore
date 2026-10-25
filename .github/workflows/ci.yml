@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-test:
+    name: Build & Test
+    runs-on: xcode-27
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: |
+          sudo xcode-select -s /Applications/Xcode_27.1.app/Contents/Developer
+          xcodebuild -version
+
+      - name: Install Mint
+        run: brew install mint
+
+      - name: Bootstrap CLI tools
+        run: mint bootstrap
+
+      - name: SwiftFormat lint
+        run: mint run swiftformat --lint .
+
+      - name: Generate Xcode project
+        run: mint run xcodegen generate
+
+      - name: Build and test
+        run: |
+          xcodebuild test \
+            -project AppStore.xcodeproj \
+            -scheme AppStore \
+            -destination 'platform=iOS Simulator,name=iPhone 17' \
+            -only-testing:AppStoreTests \
+            -resultBundlePath TestResults.xcresult
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: TestResults.xcresult

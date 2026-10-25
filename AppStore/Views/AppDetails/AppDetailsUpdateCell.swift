@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol AppDetailsUpdateCellDelegate: class {
+protocol AppDetailsUpdateCellDelegate: AnyObject {
     func appDetailsUpdateCell(labelSizeToFit height: CGFloat)
 }
 
@@ -27,7 +27,7 @@ final class AppDetailsUpdateCell: UICollectionViewCell, CollectionViewCellPresen
     }
 
     static func estimatedSize(width: CGFloat, height: CGFloat = 135) -> CGSize {
-        return .init(width: width, height: height)
+        .init(width: width, height: height)
     }
 
     @IBAction func showMoreButtonTapped(_ sender: Any) {

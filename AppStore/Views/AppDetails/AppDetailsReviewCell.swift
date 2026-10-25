@@ -16,7 +16,7 @@ final class AppDetailsReviewCell: UICollectionViewCell, CollectionViewCellPresen
     @IBOutlet weak var showMoreButton: UIButton!
 
     static func estimatedSize(with width: CGFloat) -> CGSize {
-        return .init(width: width - 20 * 2, height: 250)
+        .init(width: width - 20 * 2, height: 250)
     }
 
     //

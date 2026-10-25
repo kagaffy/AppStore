@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol CollectionReusableViewPresenter: class {
+protocol CollectionReusableViewPresenter: AnyObject {
     associatedtype T
 
     var data: T? { get set }
