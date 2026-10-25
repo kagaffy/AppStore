@@ -1,11 +1,8 @@
 name: CI
 
 on:
-  push:
-    branches:
-      - master
-      - main
   pull_request:
+    types: [opened, synchronize, reopened]
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
@@ -15,7 +12,7 @@ jobs:
   build-test:
     name: Build & Test
     runs-on: xcode-27
-    timeout-minutes: 45
+    timeout-minutes: 20
 
     steps:
       - name: Checkout
@@ -40,12 +37,14 @@ jobs:
 
       - name: Build and test
         run: |
+          set -o pipefail
           xcodebuild test \
             -project AppStore.xcodeproj \
             -scheme AppStore \
             -destination 'platform=iOS Simulator,name=iPhone 17' \
             -only-testing:AppStoreTests \
-            -resultBundlePath TestResults.xcresult
+            -resultBundlePath TestResults.xcresult \
+            | mint run xcbeautify --renderer github-actions
 
       - name: Upload test results
         if: failure()
