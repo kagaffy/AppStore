@@ -28,7 +28,7 @@ public struct Review {
     }
 
     public static func load(_ array: [JSON]) -> [Review] {
-        return array.compactMap { Review($0) }
+        array.compactMap { Review($0) }
     }
 }
 

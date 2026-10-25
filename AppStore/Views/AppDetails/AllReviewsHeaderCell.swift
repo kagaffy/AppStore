@@ -11,7 +11,7 @@ final class AllReviewsHeaderCell: UICollectionViewCell, CollectionViewCellPresen
     @IBOutlet weak var auxiliaryView: ReviewAuxiliaryView!
 
     static func estimatedSize(with width: CGFloat) -> CGSize {
-        return .init(width: width, height: 150)
+        .init(width: width, height: 150)
     }
 
     //

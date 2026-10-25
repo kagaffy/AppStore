@@ -16,7 +16,7 @@ class AppsSearchVC: BaseViewController {
     var timer: Timer = .init()
 
     var text: String? {
-        return searchBar.text
+        searchBar.text
     }
 
     override func viewDidLoad() {
@@ -43,7 +43,7 @@ class AppsSearchVC: BaseViewController {
     }
 
     func fetchSearchResults() {
-        guard let text = text else { return }
+        guard let text else { return }
 
         GetSearchResults(term: text).execute(in: .background).then(in: .main) { [weak self] searchResults in
             self?.data.resultApps = searchResults
@@ -58,7 +58,7 @@ extension AppsSearchVC: UICollectionViewDataSource, UICollectionViewDelegate, UI
     //
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return data.resultApps?.count ?? 0
+        data.resultApps?.count ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -84,11 +84,11 @@ extension AppsSearchVC: UICollectionViewDataSource, UICollectionViewDelegate, UI
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return .init(top: 0, left: 0, bottom: 20, right: 0)
+        .init(top: 0, left: 0, bottom: 20, right: 0)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 40
+        40
     }
 }
 
@@ -121,7 +121,7 @@ extension AppsSearchVC {
 
 extension AppsSearchVC: CollectionViewRegister {
     var cellTypes: [UICollectionViewCell.Type] {
-        return [
+        [
             AppsSearchResultCell.self,
         ]
     }
@@ -129,6 +129,6 @@ extension AppsSearchVC: CollectionViewRegister {
 
 extension AppsSearchVC: ScrollableToTop {
     var scrollableView: Any? {
-        return collectionView
+        collectionView
     }
 }

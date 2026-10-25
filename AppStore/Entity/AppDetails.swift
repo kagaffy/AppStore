@@ -27,7 +27,7 @@ public struct AppDetails {
     public var genres: [String]
     public var currentVersionReleaseDateString: String
     public var currentVersionReleaseDate: DateInRegion? {
-        return DateInRegion(currentVersionReleaseDateString)
+        DateInRegion(currentVersionReleaseDateString)
     }
 
     public var primaryGenreName: String
@@ -39,7 +39,7 @@ public struct AppDetails {
     public var userRatingCount: Int
 
     public init?(_ json: JSON?) {
-        guard let json = json else { return nil }
+        guard let json else { return nil }
 
         guard let id = json["trackId"].int else { return nil }
         guard let artistId = json["artistId"].int else { return nil }
@@ -65,18 +65,18 @@ public struct AppDetails {
 
         self.id = id
         self.artistId = artistId
-        self.screenshotUrls = screenshotUrls.compactMap { $0.string }
+        self.screenshotUrls = screenshotUrls.compactMap(\.string)
         self.iconUrl = iconUrl
-        self.advisories = advisories.compactMap { $0.string }
-        self.supportedDevices = supportedDevices.compactMap { $0.string }
-        self.languageCodes = languageCodes.compactMap { $0.string }
+        self.advisories = advisories.compactMap(\.string)
+        self.supportedDevices = supportedDevices.compactMap(\.string)
+        self.languageCodes = languageCodes.compactMap(\.string)
         self.fileSizeBytes = fileSizeBytes
         self.ageLimit = ageLimit
         self.releaseDate = releaseDate
         releaseNotes = json["releaseNotes"].string
         self.primaryGenreId = primaryGenreId
         self.sellerName = sellerName
-        self.genres = genres.compactMap { $0.string }
+        self.genres = genres.compactMap(\.string)
         self.currentVersionReleaseDateString = currentVersionReleaseDateString
         self.primaryGenreName = primaryGenreName
         self.price = price
@@ -88,7 +88,7 @@ public struct AppDetails {
     }
 
     static func load(_ array: [JSON]) -> [AppDetails] {
-        return array.compactMap { AppDetails($0) }
+        array.compactMap { AppDetails($0) }
     }
 }
 
@@ -131,7 +131,7 @@ struct AppDetailsModel: Decodable, Identifiable {
     var genres: [String]
     var currentVersionReleaseDateString: String
     var currentVersionReleaseDate: DateInRegion? {
-        return DateInRegion(currentVersionReleaseDateString)
+        DateInRegion(currentVersionReleaseDateString)
     }
 
     var price: String

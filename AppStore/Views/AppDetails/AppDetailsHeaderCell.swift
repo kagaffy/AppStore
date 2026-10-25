@@ -20,7 +20,7 @@ final class AppDetailsHeaderCell: UICollectionViewCell, CollectionViewCellPresen
     static let iconWidth: CGFloat = 110
 
     static func estimatedSize(with width: CGFloat) -> CGSize {
-        return .init(width: width, height: 190)
+        .init(width: width, height: 190)
     }
 
     //

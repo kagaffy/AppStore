@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol AppDetailsSectionHeaderCellDelegate: class {
+protocol AppDetailsSectionHeaderCellDelegate: AnyObject {
     func appDetailsSectionHeaderCell(didTapReviewButton cell: AppDetailsSectionHeaderCell)
     func appDetailsSectionHeaderCell(didTapUpdateButton cell: AppDetailsSectionHeaderCell)
 }
@@ -23,11 +23,11 @@ final class AppDetailsSectionHeaderCell: UICollectionReusableView, CollectionReu
     private var cellKind: CellKindPresenter?
 
     var titles: (String, String)? {
-        return cellKind?.title
+        cellKind?.title
     }
 
     static func estimatedSize(with width: CGFloat, cellKind: CellKindPresenter?) -> CGSize {
-        guard let cellKind = cellKind else { return .zero }
+        guard let cellKind else { return .zero }
 
         switch cellKind {
         case .reviews, .update, .information:
@@ -93,12 +93,12 @@ extension AppDetailsSectionHeaderCell {
         var title: (String, String) {
             switch self {
             case .reviews:
-                return ("評価とレビュー", "すべて表示")
+                ("評価とレビュー", "すべて表示")
             case .update:
-                return ("アップデート", "バージョン履歴")
+                ("アップデート", "バージョン履歴")
             case .information:
-                return ("情報", "")
-            default: return ("", "")
+                ("情報", "")
+            default: ("", "")
             }
         }
     }

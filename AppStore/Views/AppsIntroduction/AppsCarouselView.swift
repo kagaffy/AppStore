@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol AppsCarouselViewDelegate: class {
+protocol AppsCarouselViewDelegate: AnyObject {
     func appsCarouselView(didSelectAppIdWith id: String)
 }
 
@@ -45,7 +45,7 @@ extension AppsCarouselView: UICollectionViewDataSource, UICollectionViewDelegate
     //
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return data.apps.count
+        data.apps.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -82,11 +82,11 @@ extension AppsCarouselView: UICollectionViewDataSource, UICollectionViewDelegate
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return IntroductionVC.DataSet.appsCarouselCellHorizontalSpacing
+        IntroductionVC.DataSet.appsCarouselCellHorizontalSpacing
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return IntroductionVC.DataSet.appsCarouselCellVerticalSpacing
+        IntroductionVC.DataSet.appsCarouselCellVerticalSpacing
     }
 }
 
@@ -99,7 +99,7 @@ extension AppsCarouselView {
 
 extension AppsCarouselView: CollectionViewRegister {
     var cellTypes: [UICollectionViewCell.Type] {
-        return [
+        [
             AppsCarouselCell.self,
         ]
     }

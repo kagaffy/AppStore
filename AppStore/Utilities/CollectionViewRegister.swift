@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol CollectionViewRegister: class {
+protocol CollectionViewRegister: AnyObject {
     var cellTypes: [UICollectionViewCell.Type] { get }
     var headerCellTypes: [UICollectionReusableView.Type] { get }
     func registerAllCollectionViewCells(to collectionView: UICollectionView)
@@ -17,8 +17,13 @@ protocol CollectionViewRegister: class {
 }
 
 extension CollectionViewRegister {
-    var cellTypes: [UICollectionViewCell.Type] { return [] }
-    var headerCellTypes: [UICollectionReusableView.Type] { return [] }
+    var cellTypes: [UICollectionViewCell.Type] {
+        []
+    }
+
+    var headerCellTypes: [UICollectionReusableView.Type] {
+        []
+    }
 
     func registerAllCollectionViewCells(to collectionView: UICollectionView) {
         cellTypes.forEach { cellType in

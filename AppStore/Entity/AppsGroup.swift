@@ -9,8 +9,13 @@ import Foundation
 
 struct AppsGroup: Decodable {
     // MARK: public
-    var title: String { feed.title }
-    var apps: [App] { feed.results }
+    var title: String {
+        feed.title
+    }
+
+    var apps: [App] {
+        feed.results
+    }
 
     // MARK: internal
     private let feed: Feed

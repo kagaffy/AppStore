@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol AppsGroupCellDelegate: class {
+protocol AppsGroupCellDelegate: AnyObject {
     var classType: String { get }
     func appsGroupCell(allDisplayButtonTappedWith appsGroup: AppsGroup?)
     func appsGroupCell(didSelectAppIdWith id: String)

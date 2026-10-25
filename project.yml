@@ -44,7 +44,7 @@ settings:
     GCC_WARN_UNINITIALIZED_AUTOS: "YES_AGGRESSIVE"
     GCC_WARN_UNUSED_FUNCTION: "YES"
     GCC_WARN_UNUSED_VARIABLE: "YES"
-    IPHONEOS_DEPLOYMENT_TARGET: "14.0"
+    IPHONEOS_DEPLOYMENT_TARGET: "27.0"
     MTL_FAST_MATH: "YES"
     SDKROOT: "iphoneos"
   configs:
@@ -77,9 +77,6 @@ targets:
       - package: SwiftDate
       - package: Kingfisher
       - package: Hydra
-    preBuildScripts:
-      - path: script/swiftpm.sh
-        name: SwiftPM
     settings:
       base:
         ASSETCATALOG_COMPILER_APPICON_NAME: "AppIcon"
@@ -90,15 +87,15 @@ targets:
           - "@executable_path/Frameworks"
         PRODUCT_BUNDLE_IDENTIFIER: "com.yoshiki.AppStore"
         PRODUCT_NAME: "$(TARGET_NAME)"
+        # Swift 6 concurrency 移行は Phase 1–2 で実施（現状 UIKit が MainActor エラーになる）
         SWIFT_VERSION: "5.0"
         TARGETED_DEVICE_FAMILY: "1,2"
-      configs:
-        Debug:
-        Release:
   AppStoreTests:
     type: bundle.unit-test
     platform: iOS
     sources: AppStoreTests
+    dependencies:
+      - target: AppStore
     settings:
       base:
         ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: "YES"
@@ -114,13 +111,12 @@ targets:
         SWIFT_VERSION: "5.0"
         TARGETED_DEVICE_FAMILY: "1,2"
         TEST_HOST: "$(BUILT_PRODUCTS_DIR)/AppStore.app/AppStore"
-      configs:
-        Debug:
-        Release:
   AppStoreUITests:
     type: bundle.ui-testing
     platform: iOS
     sources: AppStoreUITests
+    dependencies:
+      - target: AppStore
     settings:
       base:
         ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: "YES"
@@ -135,9 +131,18 @@ targets:
         SWIFT_VERSION: "5.0"
         TARGETED_DEVICE_FAMILY: "1,2"
         TEST_TARGET_NAME: "AppStore"
-      configs:
-        Debug:
-        Release:
+schemes:
+  AppStore:
+    build:
+      targets:
+        AppStore: all
+        AppStoreTests: [test]
+        AppStoreUITests: [test]
+    test:
+      targets:
+        - AppStoreTests
+        - AppStoreUITests
+      gatherCoverageData: false
 packages:
   SwiftyJSON:
     url: https://github.com/SwiftyJSON/SwiftyJSON

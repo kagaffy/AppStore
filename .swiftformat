@@ -1,4 +1,5 @@
---disable strongOutlets, blankLinesAroundMark
+--swift-version 5.0
+--disable strongOutlets, blankLinesAroundMark, preferForLoop, redundantVariable, repeatedGuard, noForceUnwrapInTests, wrapMultilineStatementBraces
 --stripunusedargs closure-only
---exclude Pods
+--exclude Pods,AppStore.xcodeproj
 --indent 4

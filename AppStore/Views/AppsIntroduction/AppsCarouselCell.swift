@@ -16,7 +16,7 @@ final class AppsCarouselCell: UICollectionViewCell, CollectionViewCellPresenter 
     @IBOutlet var getButton: UIButton!
 
     var iconWidth: CGFloat {
-        return IntroductionVC.DataSet.appsCarouselImageWidth
+        IntroductionVC.DataSet.appsCarouselImageWidth
     }
 
     func insertSectionLineIfNeeded(_ required: Bool) {

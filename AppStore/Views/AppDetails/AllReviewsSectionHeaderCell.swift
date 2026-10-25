@@ -11,7 +11,7 @@ final class AllReviewsSectionHeaderCell: UICollectionReusableView, CollectionReu
     private var cellKind: CellKindPresenter?
 
     static func estimatedSize(with width: CGFloat, cellKind: CellKindPresenter?) -> CGSize {
-        guard let cellKind = cellKind else { return .zero }
+        guard let cellKind else { return .zero }
 
         switch cellKind {
         case .heading:

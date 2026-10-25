@@ -25,15 +25,15 @@ extension AllReviewsVC: UICollectionViewDataSource, UICollectionViewDelegate, UI
     //
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return SectionHandler.allCases.count
+        SectionHandler.allCases.count
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch SectionHandler(section) {
         case .reviews:
-            return data.reviews?.count ?? 0
+            data.reviews?.count ?? 0
         default:
-            return SectionHandler.defaultNumberOfItem
+            SectionHandler.defaultNumberOfItem
         }
     }
 
@@ -77,11 +77,11 @@ extension AllReviewsVC: UICollectionViewDataSource, UICollectionViewDelegate, UI
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return .init(top: 0, left: 0, bottom: 20, right: 0)
+        .init(top: 0, left: 0, bottom: 20, right: 0)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 15
+        15
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
@@ -119,14 +119,14 @@ extension AllReviewsVC {
 
 extension AllReviewsVC: CollectionViewRegister {
     var cellTypes: [UICollectionViewCell.Type] {
-        return [
+        [
             AllReviewsHeaderCell.self,
             AppDetailsReviewCell.self,
         ]
     }
 
     var headerCellTypes: [UICollectionReusableView.Type] {
-        return [
+        [
             AllReviewsSectionHeaderCell.self,
         ]
     }

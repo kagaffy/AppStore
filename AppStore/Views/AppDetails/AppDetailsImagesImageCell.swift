@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-protocol AppDetailsImagesImageCellDelegate: class {
+protocol AppDetailsImagesImageCellDelegate: AnyObject {
     func appDetailsImagesImageCell(estimatedSize size: CGSize?)
 }
 
@@ -25,7 +25,7 @@ final class AppDetailsImagesImageCell: UICollectionViewCell, CollectionViewCellP
     var data: String?
 
     func apply(with data: String?) {
-        guard let data = data else { return }
+        guard let data else { return }
 
         if let url = URL(string: data) {
             imageView.kf.setImage(with: url)
