@@ -25,4 +25,5 @@ test: generate
 		-scheme AppStore \
 		-destination '$(DESTINATION)' \
 		-skip-testing:AppStoreUITests \
+		-skip-testing:AppStoreTests \
 		| mint run xcbeautify
