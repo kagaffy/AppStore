@@ -1,11 +1,7 @@
 name: AppStore
 options:
   # XcodeGen omits local-package backlinks; Xcode.app needs them (issue #1549).
-  postGenCommand: "python3 script/fix-local-package-backlinks.py"
   localPackagesGroup: Packages
-fileGroups:
-  # Make package sources browsable in the Project Navigator.
-  - Packages
 configs:
   Debug: debug
   Release: release
