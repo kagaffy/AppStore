@@ -6,6 +6,7 @@
 //  Copyright © 2019 塚田良輝. All rights reserved.
 //
 
+import Domain
 import UIKit
 
 final class IntroductionListUpCell: UICollectionViewCell, CollectionViewCellPresenter {

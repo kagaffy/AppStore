@@ -1,15 +1,8 @@
-//
-//  PromiseOperation.swift
-//  AppStore
-//
-//  Created by 塚田良輝 on 2019/12/31.
-//
-
 import Foundation
 import Hydra
 import SwiftyJSON
 
-@available(*, deprecated)
+@available(*, deprecated, message: "Replace with async/await clients in Phase 2")
 public class PromiseOperation<Value> {
     public var url: URL?
     public var jsonResponse: ((JSON) -> Value)?

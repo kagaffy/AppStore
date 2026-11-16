@@ -1,10 +1,10 @@
 # Agent Instructions — AppStore
 
-学習用の iPhone App Store クローン。現代化の全体像は [docs/modernization-plan.md](docs/modernization-plan.md) を正とする。
+学習用の iPhone App Store クローン。
 
 ## 現在のフェーズ
 
-Phase 単位で進める。未着手フェーズの大規模変更は、明示的に依頼されない限り行わない。
+Phase 1（レイヤ型マルチモジュール）実施中〜完了後は Phase 2。Phase 単位で進める。未着手フェーズの大規模変更は、明示的に依頼されない限り行わない。
 
 ## CLI / ツールチェーン
 
@@ -14,23 +14,42 @@ Phase 単位で進める。未着手フェーズの大規模変更は、明示�
 - テスト: `make test`（unit test のみ。UI test は後回し）
 - `brew install xcodegen` やグローバル CLI 前提の手順を新たに書かない（Mint 本体の brew インストールは可）
 - `project.yml` 変更後は必ず `make generate`
+- Xcode でパッケージソースを見るときは Project Navigator の `Packages` グループ、または各 Package.swift から開く
+- `fileGroups: Packages` は使わない（`localPackagesGroup` と二重表示になる）
+- Xcode.app で Missing package product が出る場合は `script/fix-local-package-backlinks.py` を手動実行するか、`project.yml` の `postGenCommand` を有効化する
 - 言語モードは当面 Swift 5（`SWIFT_VERSION: 5.0`）。Swift 6 化は Phase 1–2
 
 ## アーキテクチャ方針
 
-- Clean Architecture のレイヤ分割を優先（Phase 1）:
-  - `Domain` ← 外部依存なし（Entity / UseCase / Repository protocol）
-  - `Data` → Domain のみ依存（API / DTO / Repository 実装）
-  - `Presentation` → Domain のみ依存（ViewModel / SwiftUI）。**Data を import しない**
-  - App target → Composition Root（DI・ナビ組み立て）
+- Clean Architecture のレイヤ分割（ローカル SPM）:
+  - `Packages/Domain` ← 外部依存なし（Entity / UseCase / Repository protocol）
+  - `Packages/AppData` → Domain のみ依存（API / Response / Repository 実装）。**モジュール名は `AppData`（Foundation.`Data` との衝突回避）**
+  - `Packages/Presentation` → Domain のみ依存（ViewModel / SwiftUI / Model）。**AppData を import しない**
+  - App target → Composition Root（DI・ナビ組み立て）のみが AppData の具象に依存する
 - Phase 5 でフィーチャーモジュールへ垂直分割する予定。レイヤが安定するまで Feature 分割しない
-- 依存規則: `App → Presentation → Domain ← Data`
+- 依存規則: `App → Presentation → Domain ← AppData`
+
+## 命名規則（型）
+
+`DTO` という語は使わない。層ごとにサフィックスを固定する。
+
+| 層 | サフィックス | 例 | 置き場所 |
+|---|---|---|---|
+| ネットワーク JSON 境界 | `xxxResponse` | `AppDetailsResponse`, `ReviewResponse` | `AppData` |
+| UI 表示用 | `xxxModel` | `AppDetailsModel`, `AppsGroupModel` | `Presentation` |
+| ドメインの中核 | サフィックスなし（Entity） | `AppDetails`, `AppsGroup`, `Review` | `Domain` |
+
+- `Response` → Domain Entity への変換は AppData（`toDomain()` など）
+- Domain Entity → `Model` への変換は Presentation（ViewModel 付近）
+- ViewModel は `xxxViewModel`。`xxxModel` は画面が持つ表示データ
+- 新規コードで `DTO` / `xxxDTO` を作らない
 
 ## UI / 設計
 
 - 新規 UI は **SwiftUI**。画面ホストは **`UIViewController` + `UIHostingController`**
 - **新規の Storyboard / xib は追加しない**。既存は Phase 3 で削除する
 - MVVM: ロジックは ViewModel / UseCase に置き、ViewController には置かない
+- ViewModel は Domain（UseCase）だけに依存し、**AppData を import しない**
 - Liquid Glass / 大画面適応は Phase 4。それ以前にデザインシステム全面刷新しない
 
 ## テスト
@@ -48,8 +67,7 @@ Phase 単位で進める。未着手フェーズの大規模変更は、明示�
 
 ## API
 
-- ランキング RSS 差し替えの調査結果は [docs/rss-api-replacement.md](docs/rss-api-replacement.md)
-- 実装は Phase 2。Repository 境界の外に URL ハードコードを増やさない
+- ランキング RSS 差し替えは Phase 2。Repository 境界の外に URL ハードコードを増やさない
 
 ## 変更の進め方
 

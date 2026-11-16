@@ -5,6 +5,7 @@
 //  Created by 塚田良輝 on 2019/12/27.
 //
 
+import Domain
 import UIKit
 
 class ReviewAuxiliaryView: UIView {

@@ -5,6 +5,7 @@
 //  Created by 塚田良輝 on 2019/12/28.
 //
 
+import Domain
 import UIKit
 
 final class AllReviewsHeaderCell: UICollectionViewCell, CollectionViewCellPresenter {
