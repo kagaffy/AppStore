@@ -5,8 +5,8 @@
 //  Created by 塚田良輝 on 2019/12/28.
 //
 
-import Domain
 import Kingfisher
+import Presentation
 import UIKit
 
 final class AppsSearchResultCell: UICollectionViewCell, CollectionViewCellPresenter {
@@ -84,10 +84,10 @@ final class AppsSearchResultCell: UICollectionViewCell, CollectionViewCellPresen
     // MARK: CollectionViewCellPresenter
     //
 
-    typealias T = AppDetails
-    var data: AppDetails?
+    typealias T = AppsSearchResultModel
+    var data: AppsSearchResultModel?
 
-    func apply(with data: AppDetails?) {
+    func apply(with data: AppsSearchResultModel?) {
         removeAllSubviews(parentView: imagesBackView)
         guard let appDetails = data else { return }
 

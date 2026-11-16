@@ -6,12 +6,12 @@
 //  Copyright © 2019 塚田良輝. All rights reserved.
 //
 
-import Domain
 import Foundation
+import Presentation
 import UIKit
 
 protocol AppsGroupCellDelegate: AnyObject {
-    func appsGroupCell(allDisplayButtonTappedWith appsGroup: AppsGroup?)
+    func appsGroupCell(allDisplayButtonTappedWith appsGroup: AppsGroupModel?)
     func appsGroupCell(didSelectAppIdWith id: String)
 }
 
@@ -24,7 +24,7 @@ final class AppsGroupCell: UICollectionViewCell, CollectionViewCellPresenter {
 
     let titleLabelHeight: CGFloat = 20
 
-    func setUpAppsCarouselView(with appsGroup: AppsGroup) {
+    func setUpAppsCarouselView(with appsGroup: AppsGroupModel) {
         appsCarouselView.data.apps = appsGroup.apps
         appsCarouselView.delegate = self
         appsCarouselView.collectionView.reloadData()
@@ -46,10 +46,10 @@ final class AppsGroupCell: UICollectionViewCell, CollectionViewCellPresenter {
         delegate?.appsGroupCell(allDisplayButtonTappedWith: data)
     }
 
-    typealias T = AppsGroup
-    var data: AppsGroup?
+    typealias T = AppsGroupModel
+    var data: AppsGroupModel?
 
-    func apply(with data: AppsGroup?) {
+    func apply(with data: AppsGroupModel?) {
         guard let appsGroup = data else { return }
 
         titleLabel.text = appsGroup.title

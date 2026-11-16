@@ -1,6 +1,6 @@
 import Foundation
 
-public final class FetchReviewsUseCase {
+public final class FetchReviewsUseCase: @unchecked Sendable {
     private let repository: ReviewRepository
 
     public init(repository: ReviewRepository) {

@@ -6,9 +6,9 @@
 //  Copyright © 2019 塚田良輝. All rights reserved.
 //
 
-import Domain
 import Foundation
 import Kingfisher
+import Presentation
 import UIKit
 
 final class AppsCarouselCell: UICollectionViewCell, CollectionViewCellPresenter {
@@ -39,10 +39,10 @@ final class AppsCarouselCell: UICollectionViewCell, CollectionViewCellPresenter 
     // MARK: CollectionViewCellPresenter
     //
 
-    typealias T = App
-    var data: App?
+    typealias T = AppModel
+    var data: AppModel?
 
-    func apply(with data: App?) {
+    func apply(with data: AppModel?) {
         iconImageView.image = nil
         guard let app = data else { return }
 

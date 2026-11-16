@@ -1,6 +1,6 @@
 import Foundation
 
-public final class FetchAppsGroupUseCase {
+public final class FetchAppsGroupUseCase: @unchecked Sendable {
     private let repository: AppsGroupRepository
 
     public init(repository: AppsGroupRepository) {

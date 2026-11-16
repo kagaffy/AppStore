@@ -1,12 +1,6 @@
-import Domain
 import Foundation
 
-/// Phase 1 skeleton. ViewModels / SwiftUI screens land in Phase 3.
+/// Presentation module marker. ViewModels / Models live alongside this type.
 public enum PresentationModule {
     public static let name = "Presentation"
-
-    /// Ensures the Presentation → Domain dependency stays linked.
-    public static func domainTypesAvailable() -> [String] {
-        [String(describing: AppsGroup.self), String(describing: AppDetails.self), String(describing: Review.self)]
-    }
 }

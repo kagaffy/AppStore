@@ -6,7 +6,7 @@
 //  Copyright © 2019 塚田良輝. All rights reserved.
 //
 
-import Domain
+import Presentation
 import UIKit
 
 protocol AppDetailsUpdateCellDelegate: AnyObject {
@@ -42,10 +42,10 @@ final class AppDetailsUpdateCell: UICollectionViewCell, CollectionViewCellPresen
     // MARK: CollectionViewCellPresenter
     //
 
-    typealias T = AppDetails
-    var data: AppDetails?
+    typealias T = AppDetailsModel
+    var data: AppDetailsModel?
 
-    func apply(with data: AppDetails?) {
+    func apply(with data: AppDetailsModel?) {
         guard let appDetails = data else { return }
 
         newestVersionLabel.text = "バージョン\(appDetails.version)"

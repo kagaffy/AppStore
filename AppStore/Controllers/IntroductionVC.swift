@@ -6,23 +6,31 @@
 //  Copyright © 2019 塚田良輝. All rights reserved.
 //
 
+import Combine
 import Domain
+import Presentation
 import UIKit
 
 class IntroductionVC: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
 
-    var data: DataSet = .empty
     var charts: [RankingChart] {
         [
             // Must override `charts` in IntroductionVC subclass.
         ]
     }
 
+    private var viewModel: IntroductionViewModel?
+    private var cancellables = Set<AnyCancellable>()
+    private var displayedGroupCount = 0
+
     override func viewDidLoad() {
         super.viewDidLoad()
         registerAllCollectionViewCells(to: collectionView)
-        fetchApps()
+        let viewModel = CompositionRoot.makeIntroductionViewModel(charts: charts)
+        self.viewModel = viewModel
+        bindViewModel(viewModel)
+        viewModel.load()
     }
 
     override func loadView() {
@@ -34,32 +42,35 @@ class IntroductionVC: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch (SegueType(segue.identifier), segue.destination) {
         case let (.showIntroductionListUpVC, vc as IntroductionListUpVC):
-            guard let appsGroup = sender as! AppsGroup? else { return }
-            vc.data.appsGroup = appsGroup
+            guard let appsGroup = sender as? AppsGroupModel else { return }
+            vc.appsGroup = appsGroup
         case let (.showAppDetailsVC, vc as AppDetailsVC):
-            guard let id = sender as! String? else { return }
-            vc.data.id = id
+            guard let id = sender as? String else { return }
+            vc.appID = id
         default: break
         }
     }
 
-    func fetchApps() {
-        let useCase = CompositionRoot.fetchAppsGroupUseCase
-        for chart in charts {
-            Task { [weak self] in
-                do {
-                    let appsGroup = try await useCase.execute(chart: chart)
-                    await MainActor.run {
-                        guard let self else { return }
-                        self.data.appsGroups.append(appsGroup)
-                        let indexPath = IndexPath(row: self.data.appsGroups.count - 1, section: SectionHandler.appsGroupSection)
-                        self.collectionView.insertItems(at: [indexPath])
+    private func bindViewModel(_ viewModel: IntroductionViewModel) {
+        viewModel.$appsGroups
+            .receive(on: RunLoop.main)
+            .sink { [weak self] groups in
+                guard let self else { return }
+                let newCount = groups.count
+                let oldCount = self.displayedGroupCount
+                self.displayedGroupCount = newCount
+                guard newCount > oldCount else {
+                    if newCount == 0 {
+                        self.collectionView.reloadSections([SectionHandler.appsGroupSection])
                     }
-                } catch {
-                    // Phase 2: keep UI quiet on ranking failures (dead/legacy API tolerance).
+                    return
                 }
+                let indexPaths = (oldCount ..< newCount).map {
+                    IndexPath(row: $0, section: SectionHandler.appsGroupSection)
+                }
+                self.collectionView.insertItems(at: indexPaths)
             }
-        }
+            .store(in: &cancellables)
     }
 }
 
@@ -73,7 +84,7 @@ extension IntroductionVC: UICollectionViewDataSource, UICollectionViewDelegate, 
         case .appsGroupHeader?:
             0
         case .appsGroup?:
-            data.appsGroups.count
+            viewModel?.appsGroups.count ?? 0
         default: 0
         }
     }
@@ -83,7 +94,9 @@ extension IntroductionVC: UICollectionViewDataSource, UICollectionViewDelegate, 
         case .appsGroupHeader?:
             return UICollectionViewCell()
         case .appsGroup?:
-            let appsGroup = data.appsGroups[indexPath.item]
+            guard let appsGroup = viewModel?.appsGroups[indexPath.item] else {
+                return UICollectionViewCell()
+            }
             let cell = AppsGroupCell.dequeue(from: collectionView, for: indexPath, with: appsGroup)
             cell.delegate = self
             return cell
@@ -98,14 +111,14 @@ extension IntroductionVC: UICollectionViewDataSource, UICollectionViewDelegate, 
         case .appsGroupHeader?:
             return .zero
         case .appsGroup?:
-            return .init(width: width, height: DataSet.appsGroupCellHeight)
+            return .init(width: width, height: Layout.appsGroupCellHeight)
         default: return .zero
         }
     }
 }
 
 extension IntroductionVC: AppsGroupCellDelegate {
-    func appsGroupCell(allDisplayButtonTappedWith appsGroup: AppsGroup?) {
+    func appsGroupCell(allDisplayButtonTappedWith appsGroup: AppsGroupModel?) {
         performSegue(withIdentifier: SegueType.showIntroductionListUpVC.rawValue, sender: appsGroup)
     }
 
@@ -115,10 +128,7 @@ extension IntroductionVC: AppsGroupCellDelegate {
 }
 
 extension IntroductionVC {
-    struct DataSet {
-        var appsGroups: [AppsGroup] = []
-        static let empty: DataSet = .init()
-
+    enum Layout {
         static let appsGroupTitleLabelHeight: CGFloat = 30
         static let appsGroupTitleLabelSpacing: CGFloat = 10
         static var appsGroupCellHeight: CGFloat {
@@ -142,6 +152,9 @@ extension IntroductionVC {
             width - appsCarouselCellHorizontalSectionInset * 2
         }
     }
+
+    /// Backward-compatible alias used by carousel layout helpers.
+    typealias DataSet = Layout
 }
 
 extension IntroductionVC {

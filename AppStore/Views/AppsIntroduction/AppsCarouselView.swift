@@ -6,8 +6,8 @@
 //  Copyright © 2019 塚田良輝. All rights reserved.
 //
 
-import Domain
 import Foundation
+import Presentation
 import UIKit
 
 protocol AppsCarouselViewDelegate: AnyObject {
@@ -93,7 +93,7 @@ extension AppsCarouselView: UICollectionViewDataSource, UICollectionViewDelegate
 
 extension AppsCarouselView {
     struct DataSet {
-        var apps: [App] = []
+        var apps: [AppModel] = []
         static let empty: DataSet = .init()
     }
 }

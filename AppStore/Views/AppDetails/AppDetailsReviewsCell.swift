@@ -6,7 +6,7 @@
 //  Copyright © 2019 塚田良輝. All rights reserved.
 //
 
-import Domain
+import Presentation
 import UIKit
 
 final class AppDetailsReviewsCell: UICollectionViewCell, CollectionViewCellPresenter {
@@ -21,7 +21,7 @@ final class AppDetailsReviewsCell: UICollectionViewCell, CollectionViewCellPrese
         collectionView.delegate = self
     }
 
-    func apply(appDetails: AppDetails?) {
+    func apply(appDetails: AppDetailsModel?) {
         auxiliaryView.apply(appDetails: appDetails)
     }
 
@@ -33,10 +33,10 @@ final class AppDetailsReviewsCell: UICollectionViewCell, CollectionViewCellPrese
     // MARK: CollectionViewCellPresenter
     //
 
-    typealias T = [Review]
-    var data: [Review]?
+    typealias T = [ReviewModel]
+    var data: [ReviewModel]?
 
-    func apply(with data: [Review]?) {
+    func apply(with data: [ReviewModel]?) {
         collectionView.reloadData()
     }
 }
