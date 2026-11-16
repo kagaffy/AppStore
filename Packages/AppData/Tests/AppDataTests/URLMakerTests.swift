@@ -1,28 +1,30 @@
 @testable import AppData
 import Domain
-import XCTest
+import Testing
 
-final class URLMakerTests: XCTestCase {
-    func testDetailURLContainsAppID() {
-        let url = URLMaker.detail(id: "443904275")
-        XCTAssertTrue(url.absoluteString.contains("id=443904275"))
-        XCTAssertTrue(url.absoluteString.contains("lookup"))
-    }
+@Test
+func detailURLContainsAppID() {
+    let url = URLMaker.detail(id: "443904275")
+    #expect(url.absoluteString.contains("id=443904275"))
+    #expect(url.absoluteString.contains("lookup"))
+}
 
-    func testSearchURLEncodesTerm() {
-        let url = URLMaker.search(term: "LINE")
-        XCTAssertTrue(url.absoluteString.contains("term=LINE"))
-        XCTAssertTrue(url.absoluteString.contains("search"))
-    }
+@Test
+func searchURLEncodesTerm() {
+    let url = URLMaker.search(term: "LINE")
+    #expect(url.absoluteString.contains("term=LINE"))
+    #expect(url.absoluteString.contains("search"))
+}
 
-    func testRankingURLUsesLegacyITunesRSS() {
-        let url = URLMaker.rankingURL(for: .topFree)
-        XCTAssertTrue(url.absoluteString.contains("itunes.apple.com/jp/rss/"))
-        XCTAssertTrue(url.absoluteString.contains("topfreeapplications"))
-    }
+@Test
+func rankingURLUsesLegacyITunesRSS() {
+    let url = URLMaker.rankingURL(for: .topFree)
+    #expect(url.absoluteString.contains("itunes.apple.com/jp/rss/"))
+    #expect(url.absoluteString.contains("topfreeapplications"))
+}
 
-    func testReviewURLIsHTTPS() {
-        let url = URLMaker.review(id: "443904275")
-        XCTAssertTrue(url.absoluteString.hasPrefix("https://"))
-    }
+@Test
+func reviewURLIsHTTPS() {
+    let url = URLMaker.review(id: "443904275")
+    #expect(url.absoluteString.hasPrefix("https://"))
 }

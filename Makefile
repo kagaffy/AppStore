@@ -19,10 +19,9 @@ format:
 format-lint:
 	mint run swiftformat --lint .
 
-# Swift Testing を既定のテストランタイムとして有効化（XCTest との共存は移行完了まで）。
+# パッケージ単体テストは Swift Testing。UITests は XCTest のままスキップ。
 test: generate
 	set -o pipefail; \
-	SWIFT_TESTING_XCTEST_INTEROP_MODE=complete \
 	xcodebuild test \
 		-project AppStore.xcodeproj \
 		-scheme AppStore \

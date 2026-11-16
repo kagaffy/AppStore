@@ -41,8 +41,6 @@ jobs:
           xcrun simctl bootstatus "iPhone 17" -b
 
       - name: Build and test
-        env:
-          SWIFT_TESTING_XCTEST_INTEROP_MODE: complete
         run: |
           set -o pipefail
           xcodebuild test \

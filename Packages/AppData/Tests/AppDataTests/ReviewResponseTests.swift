@@ -1,14 +1,14 @@
 @testable import AppData
-import XCTest
+import Foundation
+import Testing
 
-final class ReviewResponseTests: XCTestCase {
-    func testDecodeReviewsFixture() throws {
-        let data = try fixture("reviews_line")
-        let response = try JSONDecoder().decode(ReviewsFeedResponse.self, from: data)
-        let reviews = response.toDomain()
+@Test
+func decodeReviewsFixture() throws {
+    let data = try fixture("reviews_line")
+    let response = try JSONDecoder().decode(ReviewsFeedResponse.self, from: data)
+    let reviews = response.toDomain()
 
-        XCTAssertFalse(reviews.isEmpty)
-        XCTAssertFalse(reviews[0].name.isEmpty)
-        XCTAssertFalse(reviews[0].content.isEmpty)
-    }
+    #expect(!reviews.isEmpty)
+    #expect(!reviews[0].name.isEmpty)
+    #expect(!reviews[0].content.isEmpty)
 }
