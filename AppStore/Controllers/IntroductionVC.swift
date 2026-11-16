@@ -6,18 +6,16 @@
 //  Copyright © 2019 塚田良輝. All rights reserved.
 //
 
-import AppData
 import Domain
-import Hydra
 import UIKit
 
 class IntroductionVC: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
 
     var data: DataSet = .empty
-    var accessUrls: [URL] {
+    var charts: [RankingChart] {
         [
-            // Must override `accessUrls` in IntroductionVC subclass.
+            // Must override `charts` in IntroductionVC subclass.
         ]
     }
 
@@ -46,12 +44,19 @@ class IntroductionVC: UIViewController {
     }
 
     func fetchApps() {
-        accessUrls.forEach { url in
-            GetAppsGroup(url: url).execute(in: .background).then(in: .main) { [weak self] appsGroup in
-                if let appsGroup {
-                    self?.data.appsGroups.append(appsGroup)
-                    let indexPath = IndexPath(row: (self?.data.appsGroups.count ?? 1) - 1, section: SectionHandler.appsGroupSection)
-                    self?.collectionView.insertItems(at: [indexPath])
+        let useCase = CompositionRoot.fetchAppsGroupUseCase
+        for chart in charts {
+            Task { [weak self] in
+                do {
+                    let appsGroup = try await useCase.execute(chart: chart)
+                    await MainActor.run {
+                        guard let self else { return }
+                        self.data.appsGroups.append(appsGroup)
+                        let indexPath = IndexPath(row: self.data.appsGroups.count - 1, section: SectionHandler.appsGroupSection)
+                        self.collectionView.insertItems(at: [indexPath])
+                    }
+                } catch {
+                    // Phase 2: keep UI quiet on ranking failures (dead/legacy API tolerance).
                 }
             }
         }
@@ -59,10 +64,6 @@ class IntroductionVC: UIViewController {
 }
 
 extension IntroductionVC: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    //
-    // MARK: UICollectionViewDataSource
-    //
-
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         SectionHandler.allCases.count
     }
@@ -85,19 +86,10 @@ extension IntroductionVC: UICollectionViewDataSource, UICollectionViewDelegate, 
             let appsGroup = data.appsGroups[indexPath.item]
             let cell = AppsGroupCell.dequeue(from: collectionView, for: indexPath, with: appsGroup)
             cell.delegate = self
-            cell.titleConversion()
             return cell
         default: return UICollectionViewCell()
         }
     }
-
-    //
-    // MARK: UICollectionViewDelegate
-    //
-
-    //
-    // MARK: UICollectionViewDelegateFlowLayout
-    //
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.bounds.width
@@ -113,10 +105,6 @@ extension IntroductionVC: UICollectionViewDataSource, UICollectionViewDelegate, 
 }
 
 extension IntroductionVC: AppsGroupCellDelegate {
-    var classType: String {
-        String(describing: type(of: self))
-    }
-
     func appsGroupCell(allDisplayButtonTappedWith appsGroup: AppsGroup?) {
         performSegue(withIdentifier: SegueType.showIntroductionListUpVC.rawValue, sender: appsGroup)
     }

@@ -1,43 +1,30 @@
+import Domain
 import Foundation
 
 public enum URLMaker {
-    public static let searchBase = "https://itunes.apple.com/search?"
-    public static let rssBase = "https://rss.itunes.apple.com/api/v1/jp/ios-apps/"
+    private static let searchBase = "https://itunes.apple.com/search?"
+    private static let rssBase = "https://itunes.apple.com/jp/rss/"
 
-    public static var recommendedNewApps: URL {
-        URL(string: "\(rssBase)new-apps-we-love/all/15/explicit.json")!
-    }
-
-    public static var recommendedNewGames: URL {
-        URL(string: "\(rssBase)new-games-we-love/all/15/explicit.json")!
-    }
-
-    public static var topFree: URL {
-        URL(string: "\(rssBase)top-free/all/15/explicit.json")!
-    }
-
-    public static var topFreeGames: URL {
-        URL(string: "\(rssBase)top-free/games/15/explicit.json")!
-    }
-
-    public static var ipadTopFree: URL {
-        URL(string: "\(rssBase)top-free-ipad/all/15/explicit.json")!
-    }
-
-    public static var topSales: URL {
-        URL(string: "\(rssBase)top-grossing/all/15/explicit.json")!
-    }
-
-    public static var ipadTopSales: URL {
-        URL(string: "\(rssBase)top-grossing-ipad/all/15/explicit.json")!
-    }
-
-    public static var topPaid: URL {
-        URL(string: "\(rssBase)top-paid/all/15/explicit.json")!
-    }
-
-    public static var topPaidGames: URL {
-        URL(string: "\(rssBase)top-paid/games/15/explicit.json")!
+    public static func rankingURL(for chart: RankingChart) -> URL {
+        switch chart {
+        case .recommendedNewApps, .recommendedNewGames:
+            // We Love 相当 API は無いため新着一覧で代用
+            return url("newapplications/limit=15/json")
+        case .topFree:
+            return url("topfreeapplications/limit=15/json")
+        case .ipadTopFree:
+            return url("topfreeipadapplications/limit=15/json")
+        case .topSales:
+            return url("topgrossingapplications/limit=15/json")
+        case .ipadTopSales:
+            return url("topgrossingipadapplications/limit=15/json")
+        case .topPaid:
+            return url("toppaidapplications/limit=15/json")
+        case .topFreeGames:
+            return url("topfreeapplications/limit=15/genre=6014/json")
+        case .topPaidGames:
+            return url("toppaidapplications/limit=15/genre=6014/json")
+        }
     }
 
     public static func search(term: String) -> URL {
@@ -49,7 +36,11 @@ public enum URLMaker {
     }
 
     public static func review(id: String) -> URL {
-        URL(string: "http://itunes.apple.com/jp/rss/customerreviews/id=\(id)/json")!
+        URL(string: "https://itunes.apple.com/jp/rss/customerreviews/id=\(id)/json")!
+    }
+
+    private static func url(_ path: String) -> URL {
+        URL(string: rssBase + path)!
     }
 }
 

@@ -1,15 +1,19 @@
 import Domain
 import Foundation
-import Hydra
 
 public final class DefaultAppsGroupRepository: AppsGroupRepository {
-    public init() {}
+    private let client: HTTPClient
+    private let decoder: JSONDecoder
 
-    public func fetchAppsGroup(from url: URL, completion: @escaping (Result<AppsGroup?, Error>) -> Void) {
-        GetAppsGroup(url: url).execute(in: .background).then(in: .main) { group in
-            completion(.success(group))
-        }.catch(in: .main) { error in
-            completion(.failure(error))
-        }
+    public init(client: HTTPClient = URLSessionHTTPClient(), decoder: JSONDecoder = JSONDecoder()) {
+        self.client = client
+        self.decoder = decoder
+    }
+
+    public func fetchRanking(chart: RankingChart) async throws -> AppsGroup {
+        let url = URLMaker.rankingURL(for: chart)
+        let data = try await client.data(from: url)
+        let response = try decoder.decode(AppsGroupResponse.self, from: data)
+        return response.toDomain(title: chart.displayTitle)
     }
 }

@@ -7,7 +7,7 @@ public final class FetchAppDetailsUseCase {
         self.repository = repository
     }
 
-    public func execute(id: String, completion: @escaping (Result<AppDetails?, Error>) -> Void) {
-        repository.fetchAppDetails(id: id, completion: completion)
+    public func execute(id: String) async throws -> AppDetails? {
+        try await repository.fetchAppDetails(id: id)
     }
 }

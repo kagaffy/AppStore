@@ -6,16 +6,15 @@
 //  Copyright © 2019 塚田良輝. All rights reserved.
 //
 
-import AppData
 import Domain
 import Foundation
 
 class GamesIntroductionVC: IntroductionVC {
-    override var accessUrls: [URL] {
+    override var charts: [RankingChart] {
         [
-            URLMaker.recommendedNewGames,
-            URLMaker.topFreeGames,
-            URLMaker.topPaidGames,
+            .recommendedNewGames,
+            .topFreeGames,
+            .topPaidGames,
         ]
     }
 }

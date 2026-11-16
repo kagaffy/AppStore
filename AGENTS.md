@@ -4,7 +4,7 @@
 
 ## 現在のフェーズ
 
-Phase 1（レイヤ型マルチモジュール）実施中〜完了後は Phase 2。Phase 単位で進める。未着手フェーズの大規模変更は、明示的に依頼されない限り行わない。
+Phase 2（コア現代化 + RSS 差し替え）実施中〜完了後は Phase 3。Phase 単位で進める。未着手フェーズの大規模変更は、明示的に依頼されない限り行わない。
 
 ## CLI / ツールチェーン
 
@@ -17,7 +17,7 @@ Phase 1（レイヤ型マルチモジュール）実施中〜完了後は Phase 
 - Xcode でパッケージソースを見るときは Project Navigator の `Packages` グループ、または各 Package.swift から開く
 - `fileGroups: Packages` は使わない（`localPackagesGroup` と二重表示になる）
 - Xcode.app で Missing package product が出る場合は `script/fix-local-package-backlinks.py` を手動実行するか、`project.yml` の `postGenCommand` を有効化する
-- 言語モードは当面 Swift 5（`SWIFT_VERSION: 5.0`）。Swift 6 化は Phase 1–2
+- 言語モードは当面 Swift 5（`SWIFT_VERSION: 5.0`）。Swift 6 化は Phase 3 以降で UI ごと進める
 
 ## アーキテクチャ方針
 
@@ -35,7 +35,7 @@ Phase 1（レイヤ型マルチモジュール）実施中〜完了後は Phase 
 
 | 層 | サフィックス | 例 | 置き場所 |
 |---|---|---|---|
-| ネットワーク JSON 境界 | `xxxResponse` | `AppDetailsResponse`, `ReviewResponse` | `AppData` |
+| ネットワーク JSON 境界 | `xxxResponse` | `AppDetailsResponse`, `AppsGroupResponse` | `AppData` |
 | UI 表示用 | `xxxModel` | `AppDetailsModel`, `AppsGroupModel` | `Presentation` |
 | ドメインの中核 | サフィックスなし（Entity） | `AppDetails`, `AppsGroup`, `Review` | `Domain` |
 
@@ -49,25 +49,31 @@ Phase 1（レイヤ型マルチモジュール）実施中〜完了後は Phase 
 - 新規 UI は **SwiftUI**。画面ホストは **`UIViewController` + `UIHostingController`**
 - **新規の Storyboard / xib は追加しない**。既存は Phase 3 で削除する
 - MVVM: ロジックは ViewModel / UseCase に置き、ViewController には置かない
-- ViewModel は Domain（UseCase）だけに依存し、**AppData を import しない**
+- View / ViewModel / VC は Domain（UseCase）だけに依存し、**AppData を import しない**（配線は CompositionRoot）
 - Liquid Glass / 大画面適応は Phase 4。それ以前にデザインシステム全面刷新しない
 
 ## テスト
 
-- Domain / Data のロジック変更には **ユニットテスト必須**
+- Domain / AppData のロジック変更には **ユニットテスト必須**
+- **新規テストは Swift Testing**（`import Testing` / `@Test` / `#expect` / `#require`）。XCTest の新規追加はしない
+- 既存 XCTest は別 PR で Swift Testing へ移行する（共存期間は `SWIFT_TESTING_XCTEST_INTEROP_MODE=complete`）
 - ViewModel は UseCase / Repository をモック注入してテストする
-- ネットワークはプロトコル化し、fixture JSON で検証する
+- ネットワークは `HTTPClient` プロトコル化し、fixture JSON で検証する（JSON はインデント付きで保存）
 - UI テスト拡充は後回し（単体テスト文化を先に定着）
+- `make test` / CI はパッケージ単体テストのみ（ホスト App の `AppStoreTests` / UITests はスキップ）
 
 ## 依存ライブラリ
 
-- 新規に Hydra / SwiftyJSON / SwiftDate を使わない（Phase 2 で削除予定）
+- Hydra / SwiftyJSON / SwiftDate は使わない（削除済み）
 - 非同期は `async/await`、JSON は `Codable`、日付は Foundation
 - Kingfisher は当面残してよい。削除判断は Phase 6
 
 ## API
 
-- ランキング RSS 差し替えは Phase 2。Repository 境界の外に URL ハードコードを増やさない
+- ランキングは旧 `itunes.apple.com/jp/rss/...`。見出しは `RankingChart.displayTitle` でクライアント固定
+- 「We Love」相当は公式代替なしのため `newapplications` で代用
+- Search / Lookup / Reviews は既存ホスト。Reviews は HTTPS
+- Repository 境界の外に URL ハードコードを増やさない（`URLMaker` に集約）
 
 ## 変更の進め方
 

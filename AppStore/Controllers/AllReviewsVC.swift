@@ -5,7 +5,6 @@
 //  Created by 塚田良輝 on 2019/12/28.
 //
 
-import AppData
 import Domain
 import UIKit
 

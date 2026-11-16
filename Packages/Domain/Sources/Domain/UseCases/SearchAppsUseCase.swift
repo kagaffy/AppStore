@@ -7,7 +7,7 @@ public final class SearchAppsUseCase {
         self.repository = repository
     }
 
-    public func execute(term: String, completion: @escaping (Result<[AppDetails], Error>) -> Void) {
-        repository.searchApps(term: term, completion: completion)
+    public func execute(term: String) async throws -> [AppDetails] {
+        try await repository.searchApps(term: term)
     }
 }

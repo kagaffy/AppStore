@@ -1,23 +1,24 @@
 import Domain
 import Foundation
-import Hydra
 
 public final class DefaultAppDetailsRepository: AppDetailsRepository {
-    public init() {}
+    private let client: HTTPClient
+    private let decoder: JSONDecoder
 
-    public func fetchAppDetails(id: String, completion: @escaping (Result<AppDetails?, Error>) -> Void) {
-        GetAppDetails(id: id).execute(in: .background).then(in: .main) { details in
-            completion(.success(details))
-        }.catch(in: .main) { error in
-            completion(.failure(error))
-        }
+    public init(client: HTTPClient = URLSessionHTTPClient(), decoder: JSONDecoder = JSONDecoder()) {
+        self.client = client
+        self.decoder = decoder
     }
 
-    public func searchApps(term: String, completion: @escaping (Result<[AppDetails], Error>) -> Void) {
-        GetSearchResults(term: term).execute(in: .background).then(in: .main) { results in
-            completion(.success(results))
-        }.catch(in: .main) { error in
-            completion(.failure(error))
-        }
+    public func fetchAppDetails(id: String) async throws -> AppDetails? {
+        let data = try await client.data(from: URLMaker.detail(id: id))
+        let response = try decoder.decode(LookupResponse.self, from: data)
+        return response.results.first?.toDomain()
+    }
+
+    public func searchApps(term: String) async throws -> [AppDetails] {
+        let data = try await client.data(from: URLMaker.search(term: term))
+        let response = try decoder.decode(LookupResponse.self, from: data)
+        return response.results.map { $0.toDomain() }
     }
 }

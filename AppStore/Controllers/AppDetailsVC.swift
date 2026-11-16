@@ -6,7 +6,6 @@
 //  Copyright © 2019 塚田良輝. All rights reserved.
 //
 
-import AppData
 import Domain
 import UIKit
 
@@ -40,19 +39,33 @@ class AppDetailsVC: BaseViewController {
         guard let id = data.id else { return }
 
         let width: CGFloat = UIScreen.main.bounds.width - 40
-        GetAppDetails(id: id).execute(in: .background).then(in: .main) { [weak self] appDetails in
-            self?.data.appDetails = appDetails
-            self?.collectionView.reloadSections([SectionHandler.header.rawValue])
-            self?.fetchImage(width: width)
+        let useCase = CompositionRoot.fetchAppDetailsUseCase
+        Task { [weak self] in
+            do {
+                let appDetails = try await useCase.execute(id: id)
+                await MainActor.run {
+                    guard let self else { return }
+                    self.data.appDetails = appDetails
+                    self.collectionView.reloadSections([SectionHandler.header.rawValue])
+                    self.fetchImage(width: width)
+                }
+            } catch {}
         }
     }
 
     func fetchReviews() {
         guard let id = data.id else { return }
 
-        GetReviews(id: id).execute(in: .background).then(in: .main) { [weak self] reviews in
-            self?.data.reviews = reviews
-            self?.collectionView.reloadSections([SectionHandler.reviewsSection])
+        let useCase = CompositionRoot.fetchReviewsUseCase
+        Task { [weak self] in
+            do {
+                let reviews = try await useCase.execute(appID: id)
+                await MainActor.run {
+                    guard let self else { return }
+                    self.data.reviews = reviews
+                    self.collectionView.reloadSections([SectionHandler.reviewsSection])
+                }
+            } catch {}
         }
     }
 
