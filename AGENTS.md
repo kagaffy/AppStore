@@ -55,8 +55,8 @@ Phase 2（コア現代化 + RSS 差し替え）実施中〜完了後は Phase 3�
 ## テスト
 
 - Domain / AppData のロジック変更には **ユニットテスト必須**
-- **新規テストは Swift Testing**（`import Testing` / `@Test` / `#expect` / `#require`）。XCTest の新規追加はしない
-- 既存 XCTest は別 PR で Swift Testing へ移行する（共存期間は `SWIFT_TESTING_XCTEST_INTEROP_MODE=complete`）
+- 単体テストは **Swift Testing**（`import Testing` / `@Test` / `#expect` / `#require`）。XCTest の新規追加はしない
+- UI テスト（`AppStoreUITests`）のみ XCTest / XCUITest を継続利用する
 - ViewModel は UseCase / Repository をモック注入してテストする
 - ネットワークは `HTTPClient` プロトコル化し、fixture JSON で検証する（JSON はインデント付きで保存）
 - UI テスト拡充は後回し（単体テスト文化を先に定着）

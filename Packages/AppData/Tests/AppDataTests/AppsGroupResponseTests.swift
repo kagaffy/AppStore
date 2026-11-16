@@ -1,16 +1,16 @@
 @testable import AppData
-import XCTest
+import Foundation
+import Testing
 
-final class AppsGroupResponseTests: XCTestCase {
-    func testDecodeRankingFixture() throws {
-        let data = try fixture("ranking_topfree")
-        let response = try JSONDecoder().decode(AppsGroupResponse.self, from: data)
-        let group = response.toDomain(title: "トップ無料App")
+@Test
+func decodeRankingFixture() throws {
+    let data = try fixture("ranking_topfree")
+    let response = try JSONDecoder().decode(AppsGroupResponse.self, from: data)
+    let group = response.toDomain(title: "トップ無料App")
 
-        XCTAssertEqual(group.title, "トップ無料App")
-        XCTAssertFalse(group.apps.isEmpty)
-        XCTAssertFalse(group.apps[0].id.isEmpty)
-        XCTAssertFalse(group.apps[0].name.isEmpty)
-        XCTAssertFalse(group.apps[0].artistName.isEmpty)
-    }
+    #expect(group.title == "トップ無料App")
+    #expect(!group.apps.isEmpty)
+    #expect(!group.apps[0].id.isEmpty)
+    #expect(!group.apps[0].name.isEmpty)
+    #expect(!group.apps[0].artistName.isEmpty)
 }

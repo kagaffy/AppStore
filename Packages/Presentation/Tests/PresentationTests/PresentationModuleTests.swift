@@ -1,9 +1,8 @@
 import Presentation
-import XCTest
+import Testing
 
-final class PresentationModuleTests: XCTestCase {
-    func testModuleExposesDomainTypes() {
-        XCTAssertFalse(PresentationModule.domainTypesAvailable().isEmpty)
-        XCTAssertEqual(PresentationModule.name, "Presentation")
-    }
+@Test
+func presentationModuleExposesDomainTypes() {
+    #expect(!PresentationModule.domainTypesAvailable().isEmpty)
+    #expect(PresentationModule.name == "Presentation")
 }

@@ -1,26 +1,26 @@
 import Domain
-import XCTest
+import Foundation
+import Testing
 
-final class FetchAppsGroupUseCaseTests: XCTestCase {
-    func testExecuteReturnsRepositoryResult() async throws {
-        let expected = AppsGroup(
-            title: RankingChart.topFree.displayTitle,
-            apps: [
-                App(
-                    id: "1",
-                    name: "Demo",
-                    artistName: "Artist",
-                    iconUrl: URL(string: "https://example.com/icon.png")!
-                ),
-            ]
-        )
-        let repository = MockAppsGroupRepository(result: expected)
-        let useCase = FetchAppsGroupUseCase(repository: repository)
+@Test
+func fetchAppsGroupExecuteReturnsRepositoryResult() async throws {
+    let expected = try AppsGroup(
+        title: RankingChart.topFree.displayTitle,
+        apps: [
+            App(
+                id: "1",
+                name: "Demo",
+                artistName: "Artist",
+                iconUrl: #require(URL(string: "https://example.com/icon.png"))
+            ),
+        ]
+    )
+    let repository = MockAppsGroupRepository(result: expected)
+    let useCase = FetchAppsGroupUseCase(repository: repository)
 
-        let group = try await useCase.execute(chart: .topFree)
-        XCTAssertEqual(group, expected)
-        XCTAssertEqual(repository.requestedCharts, [.topFree])
-    }
+    let group = try await useCase.execute(chart: .topFree)
+    #expect(group == expected)
+    #expect(repository.requestedCharts == [.topFree])
 }
 
 private final class MockAppsGroupRepository: AppsGroupRepository {

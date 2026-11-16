@@ -1,14 +1,14 @@
 @testable import AppData
-import XCTest
+import Foundation
+import Testing
 
-final class AppDetailsResponseTests: XCTestCase {
-    func testDecodeLookupFixture() throws {
-        let data = try fixture("lookup_line")
-        let response = try JSONDecoder().decode(LookupResponse.self, from: data)
-        let details = try XCTUnwrap(response.results.first?.toDomain())
+@Test
+func decodeLookupFixture() throws {
+    let data = try fixture("lookup_line")
+    let response = try JSONDecoder().decode(LookupResponse.self, from: data)
+    let details = try #require(response.results.first?.toDomain())
 
-        XCTAssertEqual(details.id, 443_904_275)
-        XCTAssertFalse(details.trackName.isEmpty)
-        XCTAssertFalse(details.iconUrl.isEmpty)
-    }
+    #expect(details.id == 443_904_275)
+    #expect(!details.trackName.isEmpty)
+    #expect(!details.iconUrl.isEmpty)
 }
