@@ -5,7 +5,7 @@
 //  Created by 塚田良輝 on 2019/12/27.
 //
 
-import Domain
+import Presentation
 import UIKit
 
 class ReviewAuxiliaryView: UIView {
@@ -29,7 +29,7 @@ class ReviewAuxiliaryView: UIView {
         }
     }
 
-    func apply(appDetails: AppDetails?) {
+    func apply(appDetails: AppDetailsModel?) {
         guard let appDetails else { return }
 
         averageRatingLabel.text = String(appDetails.averageUserRating)

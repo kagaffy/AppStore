@@ -6,7 +6,7 @@
 //  Copyright © 2019 塚田良輝. All rights reserved.
 //
 
-import Domain
+import Presentation
 import UIKit
 
 final class AppDetailsInformationCell: UICollectionViewCell, CollectionViewCellPresenter {
@@ -31,10 +31,10 @@ final class AppDetailsInformationCell: UICollectionViewCell, CollectionViewCellP
     // MARK: CollectionViewCellPresenter
     //
 
-    typealias T = (AppDetails, CellKindPresenter)
-    var data: (AppDetails, CellKindPresenter)?
+    typealias T = (AppDetailsModel, CellKindPresenter)
+    var data: (AppDetailsModel, CellKindPresenter)?
 
-    func apply(with data: (AppDetails, CellKindPresenter)?) {
+    func apply(with data: (AppDetailsModel, CellKindPresenter)?) {
         cellKind = data?.1
         titleLabel.text = title
 

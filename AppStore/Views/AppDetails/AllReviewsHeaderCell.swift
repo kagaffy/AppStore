@@ -5,7 +5,7 @@
 //  Created by 塚田良輝 on 2019/12/28.
 //
 
-import Domain
+import Presentation
 import UIKit
 
 final class AllReviewsHeaderCell: UICollectionViewCell, CollectionViewCellPresenter {
@@ -19,10 +19,10 @@ final class AllReviewsHeaderCell: UICollectionViewCell, CollectionViewCellPresen
     // MARK: CollectionViewCellPresenter
     //
 
-    typealias T = AppDetails
-    var data: AppDetails?
+    typealias T = AppDetailsModel
+    var data: AppDetailsModel?
 
-    func apply(with data: AppDetails?) {
+    func apply(with data: AppDetailsModel?) {
         let appDetails = data
         auxiliaryView.apply(appDetails: appDetails)
     }

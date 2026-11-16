@@ -6,71 +6,64 @@
 //  Copyright © 2019 塚田良輝. All rights reserved.
 //
 
-import Domain
+import Combine
+import Presentation
 import UIKit
 
 class AppDetailsVC: BaseViewController {
     @IBOutlet weak var collectionView: UICollectionView!
 
-    var data: DataSet = .empty
+    var appID: String?
     var cellSize: CellSizePresenter = .empty
-
     var firstImage: UIImage?
+
+    private var viewModel: AppDetailsViewModel?
+    private var cancellables = Set<AnyCancellable>()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         registerAllCollectionViewCells(to: collectionView)
         navigationController?.navigationBar.isHidden = false
-        fetchAppDetails()
-        fetchReviews()
+
+        guard let appID else { return }
+        let viewModel = CompositionRoot.makeAppDetailsViewModel(id: appID)
+        self.viewModel = viewModel
+        bindViewModel(viewModel)
+        viewModel.load()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch (segue.identifier, segue.destination) {
         case let ("showAllReviews", vc as AllReviewsVC):
-            vc.data.appDetails = data.appDetails
-            vc.data.reviews = data.reviews
+            vc.appDetails = viewModel?.appDetails
+            vc.reviews = viewModel?.reviews ?? []
         default: break
         }
     }
 
-    func fetchAppDetails() {
-        guard let id = data.id else { return }
-
-        let width: CGFloat = UIScreen.main.bounds.width - 40
-        let useCase = CompositionRoot.fetchAppDetailsUseCase
-        Task { [weak self] in
-            do {
-                let appDetails = try await useCase.execute(id: id)
-                await MainActor.run {
-                    guard let self else { return }
-                    self.data.appDetails = appDetails
-                    self.collectionView.reloadSections([SectionHandler.header.rawValue])
-                    self.fetchImage(width: width)
+    private func bindViewModel(_ viewModel: AppDetailsViewModel) {
+        viewModel.$appDetails
+            .receive(on: RunLoop.main)
+            .sink { [weak self] details in
+                guard let self else { return }
+                self.collectionView.reloadSections([SectionHandler.header.rawValue])
+                if details != nil {
+                    self.fetchImage(width: UIScreen.main.bounds.width - 40)
                 }
-            } catch {}
-        }
-    }
+            }
+            .store(in: &cancellables)
 
-    func fetchReviews() {
-        guard let id = data.id else { return }
-
-        let useCase = CompositionRoot.fetchReviewsUseCase
-        Task { [weak self] in
-            do {
-                let reviews = try await useCase.execute(appID: id)
-                await MainActor.run {
-                    guard let self else { return }
-                    self.data.reviews = reviews
-                    self.collectionView.reloadSections([SectionHandler.reviewsSection])
-                }
-            } catch {}
-        }
+        viewModel.$reviews
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.collectionView.reloadSections([SectionHandler.reviewsSection])
+            }
+            .store(in: &cancellables)
     }
 
     func fetchImage(width: CGFloat) {
-        guard let urlString = data.appDetails?.screenshotUrls.first else { return }
+        guard let urlString = viewModel?.appDetails?.screenshotUrls.first else { return }
 
         if let url = URL(string: urlString) {
             UIImageView().kf.setImage(with: url) { result in
@@ -91,10 +84,6 @@ class AppDetailsVC: BaseViewController {
 }
 
 extension AppDetailsVC: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    //
-    // MARK: UICollectionViewDataSource
-    //
-
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         SectionHandler.allCases.count
     }
@@ -109,8 +98,8 @@ extension AppDetailsVC: UICollectionViewDataSource, UICollectionViewDelegate, UI
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let appDetails = data.appDetails
-        let reviews = data.reviews
+        let appDetails = viewModel?.appDetails
+        let reviews = viewModel?.reviews
         switch SectionHandler(indexPath.section) {
         case .header:
             let cell = AppDetailsHeaderCell.dequeue(from: collectionView, for: indexPath, with: appDetails)
@@ -135,7 +124,9 @@ extension AppDetailsVC: UICollectionViewDataSource, UICollectionViewDelegate, UI
             cell.delegate = self
             return cell
         case .information:
-            guard let appDetails, let cellKind = AppDetailsInformationCell.CellKindPresenter(indexPath.item) else { return UICollectionViewCell() }
+            guard let appDetails, let cellKind = AppDetailsInformationCell.CellKindPresenter(indexPath.item) else {
+                return UICollectionViewCell()
+            }
 
             let cell = AppDetailsInformationCell.dequeue(from: collectionView, for: indexPath, with: (appDetails, cellKind))
             return cell
@@ -150,14 +141,6 @@ extension AppDetailsVC: UICollectionViewDataSource, UICollectionViewDelegate, UI
         cell.delegate = self
         return cell
     }
-
-    //
-    // MARK: UICollectionViewDelegate
-    //
-
-    //
-    // MARK: UICollectionViewDelegateFlowLayout
-    //
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.bounds.width
@@ -192,15 +175,6 @@ extension AppDetailsVC: UICollectionViewDataSource, UICollectionViewDelegate, UI
         let cellKind = AppDetailsSectionHeaderCell.CellKindPresenter(section)
 
         return AppDetailsSectionHeaderCell.estimatedSize(with: width, cellKind: cellKind)
-    }
-}
-
-extension AppDetailsVC {
-    struct DataSet {
-        var id: String?
-        var appDetails: AppDetails?
-        var reviews: [Review]?
-        static let empty: DataSet = .init()
     }
 }
 

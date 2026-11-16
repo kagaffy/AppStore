@@ -6,7 +6,7 @@
 //  Copyright © 2019 塚田良輝. All rights reserved.
 //
 
-import Domain
+import Presentation
 import UIKit
 
 final class IntroductionListUpCell: UICollectionViewCell, CollectionViewCellPresenter {
@@ -37,10 +37,10 @@ final class IntroductionListUpCell: UICollectionViewCell, CollectionViewCellPres
     // MARK: CollectionViewCellPresenter
     //
 
-    typealias T = App
-    var data: App?
+    typealias T = AppModel
+    var data: AppModel?
 
-    func apply(with data: App?) {
+    func apply(with data: AppModel?) {
         iconImageView.image = nil
         guard let app = data else { return }
 

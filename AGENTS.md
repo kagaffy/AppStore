@@ -4,7 +4,7 @@
 
 ## 現在のフェーズ
 
-Phase 2（コア現代化 + RSS 差し替え）実施中〜完了後は Phase 3。Phase 単位で進める。未着手フェーズの大規模変更は、明示的に依頼されない限り行わない。
+Phase 3（MVVM 抽出）。全画面のロジックを Presentation ViewModel / Model へ移す。**xib / storyboard / SwiftUI など UI 置換はユーザーが後で行う**（エージェントは UI を変更しない）。Phase 単位で進める。未着手フェーズの大規模変更は、明示的に依頼されない限り行わない。
 
 ## CLI / ツールチェーン
 
@@ -46,9 +46,8 @@ Phase 2（コア現代化 + RSS 差し替え）実施中〜完了後は Phase 3�
 
 ## UI / 設計
 
-- 新規 UI は **SwiftUI**。画面ホストは **`UIViewController` + `UIHostingController`**
-- **新規の Storyboard / xib は追加しない**。既存は Phase 3 で削除する
-- MVVM: ロジックは ViewModel / UseCase に置き、ViewController には置かない
+- 現状 UI は既存 UIKit + xib。SwiftUI 化・xib 削除はユーザー担当（エージェントは触らない）
+- MVVM: ロジックは ViewModel / UseCase に置き、ViewController は薄いバインダのみ
 - View / ViewModel / VC は Domain（UseCase）だけに依存し、**AppData を import しない**（配線は CompositionRoot）
 - Liquid Glass / 大画面適応は Phase 4。それ以前にデザインシステム全面刷新しない
 

@@ -5,7 +5,8 @@
 //  Created by 塚田良輝 on 2019/12/28.
 //
 
-import Domain
+import Combine
+import Presentation
 import UIKit
 
 class AppsSearchVC: BaseViewController {
@@ -13,12 +14,8 @@ class AppsSearchVC: BaseViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var collectionView: UICollectionView!
 
-    var data: DataSet = .empty
-    var timer: Timer = .init()
-
-    var text: String? {
-        searchBar.text
-    }
+    private lazy var viewModel = CompositionRoot.makeAppsSearchViewModel()
+    private var cancellables = Set<AnyCancellable>()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,64 +23,41 @@ class AppsSearchVC: BaseViewController {
         registerAllCollectionViewCells(to: collectionView)
         searchBar.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
         navigationController?.navigationBar.isHidden = true
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        timer.invalidate()
+        bindViewModel()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch (segue.identifier, segue.destination) {
         case let ("showAppDetails", vc as AppDetailsVC):
-            guard let appDetails = sender as? AppDetails else { break }
-            vc.data.id = String(appDetails.id)
+            guard let result = sender as? AppsSearchResultModel else { break }
+            vc.appID = String(result.id)
         default: break
         }
     }
 
-    func fetchSearchResults() {
-        guard let text else { return }
-
-        let useCase = CompositionRoot.searchAppsUseCase
-        Task { [weak self] in
-            do {
-                let searchResults = try await useCase.execute(term: text)
-                await MainActor.run {
-                    self?.data.resultApps = searchResults
-                    self?.collectionView.reloadData()
-                }
-            } catch {}
-        }
+    private func bindViewModel() {
+        viewModel.$results
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.collectionView.reloadData()
+            }
+            .store(in: &cancellables)
     }
 }
 
 extension AppsSearchVC: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    //
-    // MARK: UICollectionViewDataSource
-    //
-
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        data.resultApps?.count ?? 0
+        viewModel.results.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = AppsSearchResultCell.dequeue(from: collectionView, for: indexPath, with: data.resultApps?[indexPath.item])
+        let cell = AppsSearchResultCell.dequeue(from: collectionView, for: indexPath, with: viewModel.results[indexPath.item])
         return cell
     }
 
-    //
-    // MARK: UICollectionViewDelegate
-    //
-
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "showAppDetails", sender: data.resultApps?[indexPath.item])
+        performSegue(withIdentifier: "showAppDetails", sender: viewModel.results[indexPath.item])
     }
-
-    //
-    // MARK: UICollectionViewDelegateFlowLayout
-    //
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.bounds.width
@@ -101,11 +75,7 @@ extension AppsSearchVC: UICollectionViewDataSource, UICollectionViewDelegate, UI
 
 extension AppsSearchVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        timer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false) { _ in
-            self.data.resultApps?.removeAll()
-            self.fetchSearchResults()
-            self.timer.invalidate()
-        }
+        viewModel.searchTextDidChange(searchText)
     }
 
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -116,13 +86,7 @@ extension AppsSearchVC: UISearchBarDelegate {
         searchBar.setShowsCancelButton(false, animated: true)
         searchBar.text?.removeAll()
         searchBar.resignFirstResponder()
-    }
-}
-
-extension AppsSearchVC {
-    struct DataSet {
-        var resultApps: [AppDetails]?
-        static var empty: DataSet = .init()
+        viewModel.clearResults()
     }
 }
 

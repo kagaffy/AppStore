@@ -5,7 +5,7 @@
 //  Created by 塚田良輝 on 2019/12/17.
 //
 
-import Domain
+import Presentation
 import UIKit
 
 final class AppDetailsReviewCell: UICollectionViewCell, CollectionViewCellPresenter {
@@ -24,10 +24,10 @@ final class AppDetailsReviewCell: UICollectionViewCell, CollectionViewCellPresen
     // MARK: CollectionViewCellPresenter
     //
 
-    typealias T = Review
-    var data: Review?
+    typealias T = ReviewModel
+    var data: ReviewModel?
 
-    func apply(with data: Review?) {
+    func apply(with data: ReviewModel?) {
         guard let review = data else { return }
 
         titleLabel.text = review.title

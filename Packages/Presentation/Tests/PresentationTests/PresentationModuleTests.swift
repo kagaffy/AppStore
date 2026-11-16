@@ -2,7 +2,6 @@ import Presentation
 import Testing
 
 @Test
-func presentationModuleExposesDomainTypes() {
-    #expect(!PresentationModule.domainTypesAvailable().isEmpty)
+func presentationModuleName() {
     #expect(PresentationModule.name == "Presentation")
 }
