@@ -1,7 +1,8 @@
 import Domain
 import SwiftyJSON
 
-enum ReviewDTO {
+/// レビュー RSS の1件分（ネットワーク境界の型）。
+enum ReviewResponse {
     static func make(from json: JSON) -> Review? {
         guard let name = json["author"]["name"]["label"].string else { return nil }
         guard let rating = json["im:rating"]["label"].string else { return nil }

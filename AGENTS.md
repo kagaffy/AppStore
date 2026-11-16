@@ -23,17 +23,33 @@ Phase 1（レイヤ型マルチモジュール）実施中〜完了後は Phase 
 
 - Clean Architecture のレイヤ分割（ローカル SPM）:
   - `Packages/Domain` ← 外部依存なし（Entity / UseCase / Repository protocol）
-  - `Packages/AppData` → Domain のみ依存（API / DTO / Repository 実装）。**モジュール名は `AppData`（Foundation.`Data` との衝突回避）**
-  - `Packages/Presentation` → Domain のみ依存（ViewModel / SwiftUI）。**AppData を import しない**
-  - App target → Composition Root（DI・ナビ組み立て）
+  - `Packages/AppData` → Domain のみ依存（API / Response / Repository 実装）。**モジュール名は `AppData`（Foundation.`Data` との衝突回避）**
+  - `Packages/Presentation` → Domain のみ依存（ViewModel / SwiftUI / Model）。**AppData を import しない**
+  - App target → Composition Root（DI・ナビ組み立て）のみが AppData の具象に依存する
 - Phase 5 でフィーチャーモジュールへ垂直分割する予定。レイヤが安定するまで Feature 分割しない
 - 依存規則: `App → Presentation → Domain ← AppData`
+
+## 命名規則（型）
+
+`DTO` という語は使わない。層ごとにサフィックスを固定する。
+
+| 層 | サフィックス | 例 | 置き場所 |
+|---|---|---|---|
+| ネットワーク JSON 境界 | `xxxResponse` | `AppDetailsResponse`, `ReviewResponse` | `AppData` |
+| UI 表示用 | `xxxModel` | `AppDetailsModel`, `AppsGroupModel` | `Presentation` |
+| ドメインの中核 | サフィックスなし（Entity） | `AppDetails`, `AppsGroup`, `Review` | `Domain` |
+
+- `Response` → Domain Entity への変換は AppData（`toDomain()` など）
+- Domain Entity → `Model` への変換は Presentation（ViewModel 付近）
+- ViewModel は `xxxViewModel`。`xxxModel` は画面が持つ表示データ
+- 新規コードで `DTO` / `xxxDTO` を作らない
 
 ## UI / 設計
 
 - 新規 UI は **SwiftUI**。画面ホストは **`UIViewController` + `UIHostingController`**
 - **新規の Storyboard / xib は追加しない**。既存は Phase 3 で削除する
 - MVVM: ロジックは ViewModel / UseCase に置き、ViewController には置かない
+- ViewModel は Domain（UseCase）だけに依存し、**AppData を import しない**
 - Liquid Glass / 大画面適応は Phase 4。それ以前にデザインシステム全面刷新しない
 
 ## テスト

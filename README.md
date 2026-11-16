@@ -22,8 +22,8 @@ make open
 | Package | Role |
 |---------|------|
 | `Packages/Domain` | Entity / UseCase / Repository protocol（外部依存なし） |
-| `Packages/AppData` | API / DTO / Repository 実装（Domain に依存） |
-| `Packages/Presentation` | ViewModel / SwiftUI（Domain に依存。Phase 3 で本実装） |
+| `Packages/AppData` | API / `xxxResponse` / Repository 実装（Domain に依存） |
+| `Packages/Presentation` | ViewModel / `xxxModel` / SwiftUI（Domain に依存。Phase 3 で本実装） |
 
 依存規則: `App → Presentation → Domain ← AppData`
 

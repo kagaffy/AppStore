@@ -7,7 +7,7 @@ public final class GetReviews: PromiseOperation<[Review]> {
         super.init()
         url = URLMaker.review(id: id)
         jsonResponse = { json in
-            ReviewDTO.load(json["feed"]["entry"].arrayValue)
+            ReviewResponse.load(json["feed"]["entry"].arrayValue)
         }
     }
 }

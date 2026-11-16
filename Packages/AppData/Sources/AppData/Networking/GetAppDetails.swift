@@ -7,7 +7,7 @@ public final class GetAppDetails: PromiseOperation<AppDetails?> {
         super.init()
         url = URLMaker.detail(id: id)
         jsonResponse = { json in
-            AppDetailsDTO.make(from: json["results"].array?.first)
+            AppDetailsResponse.make(from: json["results"].array?.first)
         }
     }
 }
@@ -18,7 +18,7 @@ public final class GetSearchResults: PromiseOperation<[AppDetails]> {
         super.init()
         url = URLMaker.search(term: term)
         jsonResponse = { json in
-            AppDetailsDTO.load(json["results"].arrayValue)
+            AppDetailsResponse.load(json["results"].arrayValue)
         }
     }
 }

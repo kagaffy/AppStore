@@ -2,65 +2,8 @@ import Domain
 import Foundation
 import SwiftyJSON
 
-enum AppDetailsDTO {
-    static func make(from json: JSON?) -> AppDetails? {
-        guard let json else { return nil }
-
-        guard let id = json["trackId"].int else { return nil }
-        guard let artistId = json["artistId"].int else { return nil }
-        guard let screenshotUrls = json["screenshotUrls"].array else { return nil }
-        guard let iconUrl = json["artworkUrl100"].string else { return nil }
-        guard let advisories = json["advisories"].array else { return nil }
-        guard let supportedDevices = json["supportedDevices"].array else { return nil }
-        guard let languageCodes = json["languageCodesISO2A"].array else { return nil }
-        guard let fileSizeBytes = json["fileSizeBytes"].string else { return nil }
-        guard let ageLimit = json["contentAdvisoryRating"].string else { return nil }
-        guard let releaseDate = json["releaseDate"].string else { return nil }
-        guard let primaryGenreId = json["primaryGenreId"].int else { return nil }
-        guard let sellerName = json["sellerName"].string else { return nil }
-        guard let genres = json["genres"].array else { return nil }
-        guard let currentVersionReleaseDateString = json["currentVersionReleaseDate"].string else { return nil }
-        guard let primaryGenreName = json["primaryGenreName"].string else { return nil }
-        guard let price = json["formattedPrice"].string else { return nil }
-        guard let version = json["version"].string else { return nil }
-        guard let trackName = json["trackName"].string else { return nil }
-        guard let description = json["description"].string else { return nil }
-        guard let averageUserRating = json["averageUserRating"].float else { return nil }
-        guard let userRatingCount = json["userRatingCount"].int else { return nil }
-
-        return AppDetails(
-            id: id,
-            artistId: artistId,
-            screenshotUrls: screenshotUrls.compactMap(\.string),
-            iconUrl: iconUrl,
-            advisories: advisories.compactMap(\.string),
-            supportedDevices: supportedDevices.compactMap(\.string),
-            languageCodes: languageCodes.compactMap(\.string),
-            fileSizeBytes: fileSizeBytes,
-            ageLimit: ageLimit,
-            releaseDate: releaseDate,
-            releaseNotes: json["releaseNotes"].string,
-            primaryGenreId: primaryGenreId,
-            sellerName: sellerName,
-            genres: genres.compactMap(\.string),
-            currentVersionReleaseDateString: currentVersionReleaseDateString,
-            primaryGenreName: primaryGenreName,
-            price: price,
-            version: version,
-            trackName: trackName,
-            description: description,
-            averageUserRating: averageUserRating,
-            userRatingCount: userRatingCount
-        )
-    }
-
-    static func load(_ array: [JSON]) -> [AppDetails] {
-        array.compactMap { make(from: $0) }
-    }
-}
-
-/// Codable DTO used by DomainTests / DataTests (lookup result item shape).
-public struct AppDetailsModel: Decodable, Identifiable, Equatable {
+/// Lookup / Search API の1件分（ネットワーク境界の型）。
+public struct AppDetailsResponse: Decodable, Identifiable, Equatable {
     public let id: Int
     public var artistId: Int
     public var screenshotUrls: [URL]
@@ -151,5 +94,61 @@ public struct AppDetailsModel: Decodable, Identifiable, Equatable {
             averageUserRating: averageUserRating,
             userRatingCount: userRatingCount
         )
+    }
+
+    /// SwiftyJSON 経路（Phase 2 で Codable に寄せるまでの暫定）。
+    static func make(from json: JSON?) -> AppDetails? {
+        guard let json else { return nil }
+
+        guard let id = json["trackId"].int else { return nil }
+        guard let artistId = json["artistId"].int else { return nil }
+        guard let screenshotUrls = json["screenshotUrls"].array else { return nil }
+        guard let iconUrl = json["artworkUrl100"].string else { return nil }
+        guard let advisories = json["advisories"].array else { return nil }
+        guard let supportedDevices = json["supportedDevices"].array else { return nil }
+        guard let languageCodes = json["languageCodesISO2A"].array else { return nil }
+        guard let fileSizeBytes = json["fileSizeBytes"].string else { return nil }
+        guard let ageLimit = json["contentAdvisoryRating"].string else { return nil }
+        guard let releaseDate = json["releaseDate"].string else { return nil }
+        guard let primaryGenreId = json["primaryGenreId"].int else { return nil }
+        guard let sellerName = json["sellerName"].string else { return nil }
+        guard let genres = json["genres"].array else { return nil }
+        guard let currentVersionReleaseDateString = json["currentVersionReleaseDate"].string else { return nil }
+        guard let primaryGenreName = json["primaryGenreName"].string else { return nil }
+        guard let price = json["formattedPrice"].string else { return nil }
+        guard let version = json["version"].string else { return nil }
+        guard let trackName = json["trackName"].string else { return nil }
+        guard let description = json["description"].string else { return nil }
+        guard let averageUserRating = json["averageUserRating"].float else { return nil }
+        guard let userRatingCount = json["userRatingCount"].int else { return nil }
+
+        return AppDetails(
+            id: id,
+            artistId: artistId,
+            screenshotUrls: screenshotUrls.compactMap(\.string),
+            iconUrl: iconUrl,
+            advisories: advisories.compactMap(\.string),
+            supportedDevices: supportedDevices.compactMap(\.string),
+            languageCodes: languageCodes.compactMap(\.string),
+            fileSizeBytes: fileSizeBytes,
+            ageLimit: ageLimit,
+            releaseDate: releaseDate,
+            releaseNotes: json["releaseNotes"].string,
+            primaryGenreId: primaryGenreId,
+            sellerName: sellerName,
+            genres: genres.compactMap(\.string),
+            currentVersionReleaseDateString: currentVersionReleaseDateString,
+            primaryGenreName: primaryGenreName,
+            price: price,
+            version: version,
+            trackName: trackName,
+            description: description,
+            averageUserRating: averageUserRating,
+            userRatingCount: userRatingCount
+        )
+    }
+
+    static func load(_ array: [JSON]) -> [AppDetails] {
+        array.compactMap { make(from: $0) }
     }
 }

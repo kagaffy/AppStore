@@ -1,5 +1,8 @@
 import Foundation
 
+// NOTE(architecture): `AppsGroup` も Domain に置きつつ feed JSON を直接 Decodable している。
+// 検討: `AppsGroupResponse`（AppData）へデコードし `toDomain()` で本型へ写す形に寄せる。
+// `App` と同様、一旦このままでよい。
 public struct AppsGroup: Decodable, Equatable, Sendable {
     public var title: String {
         feed.title
