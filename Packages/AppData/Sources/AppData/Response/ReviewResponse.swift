@@ -1,24 +1,54 @@
 import Domain
-import SwiftyJSON
+import Foundation
 
-/// レビュー RSS の1件分（ネットワーク境界の型）。
-enum ReviewResponse {
-    static func make(from json: JSON) -> Review? {
-        guard let name = json["author"]["name"]["label"].string else { return nil }
-        guard let rating = json["im:rating"]["label"].string else { return nil }
-        guard let title = json["title"]["label"].string else { return nil }
-        guard let content = json["content"]["label"].string else { return nil }
+/// カスタマーレビュー RSS の feed。
+struct ReviewsFeedResponse: Decodable {
+    let feed: Feed
 
-        return Review(
-            id: json["id"]["label"].intValue,
-            name: name,
-            rating: rating,
-            title: title,
-            content: content
-        )
+    struct Feed: Decodable {
+        let entry: RSSArray<ReviewEntryResponse>
     }
 
-    static func load(_ array: [JSON]) -> [Review] {
-        array.compactMap { make(from: $0) }
+    func toDomain() -> [Review] {
+        // entry[0] はアプリ情報のことがあるため Review 化できるものだけ採用
+        feed.entry.elements.compactMap(\.toDomain)
+    }
+}
+
+struct ReviewEntryResponse: Decodable {
+    let author: Author?
+    let rating: RSSLabel?
+    let title: RSSLabel?
+    let content: Content?
+    let id: RSSLabel?
+
+    enum CodingKeys: String, CodingKey {
+        case author
+        case rating = "im:rating"
+        case title
+        case content
+        case id
+    }
+
+    struct Author: Decodable {
+        let name: RSSLabel?
+    }
+
+    struct Content: Decodable {
+        let label: String
+    }
+
+    var toDomain: Review? {
+        guard
+            let name = author?.name?.label,
+            let rating = rating?.label,
+            let title = title?.label,
+            let content = content?.label,
+            let idLabel = id?.label,
+            let id = Int(idLabel)
+        else {
+            return nil
+        }
+        return Review(id: id, name: name, rating: rating, title: title, content: content)
     }
 }

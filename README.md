@@ -47,6 +47,4 @@ make open
 
 ## App libraries (SPM)
 
-- [Kingfisher](https://github.com/onevcat/Kingfisher)
-- [Hydra](https://github.com/malcommac/Hydra)（削除予定 / AppData 経由）
-- [SwiftyJSON](https://github.com/SwiftyJSON/SwiftyJSON)（削除予定 / AppData 経由）
+- [Kingfisher](https://github.com/onevcat/Kingfisher)（画像。Phase 6 で要否判断）

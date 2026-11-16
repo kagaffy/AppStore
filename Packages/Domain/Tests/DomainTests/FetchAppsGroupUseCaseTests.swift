@@ -2,9 +2,9 @@ import Domain
 import XCTest
 
 final class FetchAppsGroupUseCaseTests: XCTestCase {
-    func testExecuteReturnsRepositoryResult() {
+    func testExecuteReturnsRepositoryResult() async throws {
         let expected = AppsGroup(
-            title: "Top Free",
+            title: RankingChart.topFree.displayTitle,
             apps: [
                 App(
                     id: "1",
@@ -14,35 +14,25 @@ final class FetchAppsGroupUseCaseTests: XCTestCase {
                 ),
             ]
         )
-        let repository = MockAppsGroupRepository(result: .success(expected))
+        let repository = MockAppsGroupRepository(result: expected)
         let useCase = FetchAppsGroupUseCase(repository: repository)
-        let expectation = expectation(description: "fetch")
 
-        useCase.execute(url: URL(string: "https://example.com")!) { result in
-            switch result {
-            case let .success(group):
-                XCTAssertEqual(group, expected)
-            case let .failure(error):
-                XCTFail("Unexpected error: \(error)")
-            }
-            expectation.fulfill()
-        }
-
-        wait(for: [expectation], timeout: 1)
-        XCTAssertEqual(repository.requestedURLs.count, 1)
+        let group = try await useCase.execute(chart: .topFree)
+        XCTAssertEqual(group, expected)
+        XCTAssertEqual(repository.requestedCharts, [.topFree])
     }
 }
 
 private final class MockAppsGroupRepository: AppsGroupRepository {
-    private let result: Result<AppsGroup?, Error>
-    private(set) var requestedURLs: [URL] = []
+    private let result: AppsGroup
+    private(set) var requestedCharts: [RankingChart] = []
 
-    init(result: Result<AppsGroup?, Error>) {
+    init(result: AppsGroup) {
         self.result = result
     }
 
-    func fetchAppsGroup(from url: URL, completion: @escaping (Result<AppsGroup?, Error>) -> Void) {
-        requestedURLs.append(url)
-        completion(result)
+    func fetchRanking(chart: RankingChart) async throws -> AppsGroup {
+        requestedCharts.append(chart)
+        return result
     }
 }

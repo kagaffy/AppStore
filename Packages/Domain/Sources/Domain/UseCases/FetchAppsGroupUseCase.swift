@@ -7,7 +7,7 @@ public final class FetchAppsGroupUseCase {
         self.repository = repository
     }
 
-    public func execute(url: URL, completion: @escaping (Result<AppsGroup?, Error>) -> Void) {
-        repository.fetchAppsGroup(from: url, completion: completion)
+    public func execute(chart: RankingChart) async throws -> AppsGroup {
+        try await repository.fetchRanking(chart: chart)
     }
 }

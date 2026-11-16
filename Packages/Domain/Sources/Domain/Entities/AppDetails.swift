@@ -1,8 +1,6 @@
 import Foundation
 
-// NOTE(architecture): こちらは Codable を持たない Domain Entity。
-// ネットワーク JSON は AppData の `AppDetailsResponse` が担当する（望ましい分離の例）。
-// `App` / `AppsGroup` も将来同様に Entity と Response を分けるかを検討する。
+/// Domain Entity。ネットワーク JSON は AppData の `AppDetailsResponse` が担当する。
 public struct AppDetails: Equatable, Sendable {
     public let id: Int
     public let artistId: Int

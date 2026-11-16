@@ -1,0 +1,156 @@
+{
+  "feed": {
+    "entry": [
+      {
+        "author": {
+          "uri": {
+            "label": "https://itunes.apple.com/jp/reviews/id197210558"
+          },
+          "name": {
+            "label": "mikally88"
+          },
+          "label": ""
+        },
+        "updated": {
+          "label": "2026-11-15T02:07:52-07:00"
+        },
+        "im:rating": {
+          "label": "1"
+        },
+        "im:version": {
+          "label": "26.17.0"
+        },
+        "id": {
+          "label": "14793027284"
+        },
+        "title": {
+          "label": "広告が気持ち悪い、使いにくい"
+        },
+        "content": {
+          "label": "使いにくくなった、昔の仕様が良かった。何故、この様に変わってしまったのか非常に残念極まりない",
+          "attributes": {
+            "type": "text"
+          }
+        },
+        "link": {
+          "attributes": {
+            "rel": "related",
+            "href": "https://itunes.apple.com/jp/review?id=443904275&type=Purple%20Software"
+          }
+        },
+        "im:voteSum": {
+          "label": "0"
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "アプリケーション"
+          }
+        },
+        "im:voteCount": {
+          "label": "0"
+        }
+      },
+      {
+        "author": {
+          "uri": {
+            "label": "https://itunes.apple.com/jp/reviews/id1784678866"
+          },
+          "name": {
+            "label": "tamttmgd"
+          },
+          "label": ""
+        },
+        "updated": {
+          "label": "2026-11-15T02:01:21-07:00"
+        },
+        "im:rating": {
+          "label": "2"
+        },
+        "im:version": {
+          "label": "26.17.0"
+        },
+        "id": {
+          "label": "14793010599"
+        },
+        "title": {
+          "label": "タイムライン"
+        },
+        "content": {
+          "label": "なんで、タイムライン無くなったのか意味不明\n\nLINEで一番の思い出の動画とか消えないように入れといたのに\n全部パーになった。\n\nタイムラインだけは無くさないで欲しかった",
+          "attributes": {
+            "type": "text"
+          }
+        },
+        "link": {
+          "attributes": {
+            "rel": "related",
+            "href": "https://itunes.apple.com/jp/review?id=443904275&type=Purple%20Software"
+          }
+        },
+        "im:voteSum": {
+          "label": "0"
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "アプリケーション"
+          }
+        },
+        "im:voteCount": {
+          "label": "0"
+        }
+      },
+      {
+        "author": {
+          "uri": {
+            "label": "https://itunes.apple.com/jp/reviews/id1624080134"
+          },
+          "name": {
+            "label": "とむやむくんぬーどる"
+          },
+          "label": ""
+        },
+        "updated": {
+          "label": "2026-11-15T01:57:58-07:00"
+        },
+        "im:rating": {
+          "label": "3"
+        },
+        "im:version": {
+          "label": "26.17.0"
+        },
+        "id": {
+          "label": "14793001940"
+        },
+        "title": {
+          "label": "普通に使う分には…"
+        },
+        "content": {
+          "label": "友達や家族などと、普通にコミュニケーションをとる分には問題ないです。けど最近になって課金を誘うようなメッセージが勝手に出てきたりして、正直ウザいです。ちなみに課金なしでも全然使えます。\nあとはオープンチャット。利用規約に反していないような普通の会話をするだけで規約違反で使えなくなったり、普通にチャットがしたい私としては正直嫌です。\nそして、LINE VOOMの廃止。私は学生の頃、YouTubeが使えない時などにお世話になったので、復活して欲しいです。LINEで買い物とかする人マジでいないと思うので、できるならば復活して欲しいです",
+          "attributes": {
+            "type": "text"
+          }
+        },
+        "link": {
+          "attributes": {
+            "rel": "related",
+            "href": "https://itunes.apple.com/jp/review?id=443904275&type=Purple%20Software"
+          }
+        },
+        "im:voteSum": {
+          "label": "0"
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "アプリケーション"
+          }
+        },
+        "im:voteCount": {
+          "label": "0"
+        }
+      }
+    ]
+  }
+}

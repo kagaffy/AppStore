@@ -1,15 +1,18 @@
 import Domain
 import Foundation
-import Hydra
 
 public final class DefaultReviewRepository: ReviewRepository {
-    public init() {}
+    private let client: HTTPClient
+    private let decoder: JSONDecoder
 
-    public func fetchReviews(appID: String, completion: @escaping (Result<[Review], Error>) -> Void) {
-        GetReviews(id: appID).execute(in: .background).then(in: .main) { reviews in
-            completion(.success(reviews))
-        }.catch(in: .main) { error in
-            completion(.failure(error))
-        }
+    public init(client: HTTPClient = URLSessionHTTPClient(), decoder: JSONDecoder = JSONDecoder()) {
+        self.client = client
+        self.decoder = decoder
+    }
+
+    public func fetchReviews(appID: String) async throws -> [Review] {
+        let data = try await client.data(from: URLMaker.review(id: appID))
+        let response = try decoder.decode(ReviewsFeedResponse.self, from: data)
+        return response.toDomain()
     }
 }

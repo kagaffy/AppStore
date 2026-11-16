@@ -1,0 +1,234 @@
+{
+  "feed": {
+    "author": {
+      "name": {
+        "label": "iTunes Store"
+      },
+      "uri": {
+        "label": "http://www.apple.com/jp/itunes/"
+      }
+    },
+    "entry": [
+      {
+        "im:name": {
+          "label": "Muse from Meta"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/d5/29/7f/d5297f61-d9af-c69d-af85-ff96162aaa89/HatchAppIconPublic-0-0-1x_U007epad-0-1-0-sRGB-0-85-220.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/d5/29/7f/d5297f61-d9af-c69d-af85-ff96162aaa89/HatchAppIconPublic-0-0-1x_U007epad-0-1-0-sRGB-0-85-220.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/d5/29/7f/d5297f61-d9af-c69d-af85-ff96162aaa89/HatchAppIconPublic-0-0-1x_U007epad-0-1-0-sRGB-0-85-220.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "Museはあなたのパーソナルエージェント。あなたにとって重要なことに常に寄り添い、タスクをこなします。あなたの承認を得たうえで、メール管理、ディナーの予約、家計管理、お得な情報の検索などを行います。\n\n個人の仕事効率化\n煩わしい雑用はMuseにお任せください。予定の調整、予約、リマインダーの設定、連絡のフォローアップまで行うため、誕生日や予定、締め切りを忘れることがなくなります。予定やメール、日常のタスクで頭の中がいっぱいな状態はもうお終い。余裕をもって毎日を過ごせます。\n\n節約・貯金\nMuseは、お金の使い道を把握するのに役立ちます。支出を記録し、サブスクリプションを精査し、忘れていた請求をリマインドし、不要なものを解約して、貯蓄目標の達成をサポートします。もちろん、解約や支払いを行う前には必ず確認を求めます。面倒なスプレッドシートなしで、家計の状況を把握できます。\n\n健康・フィットネス\nMuseは、あなた専用のAIフィットネスコーチです。あなたが共有するデータに基づいて、カスタマイズされた運動や食事のプランを作成。カロリーと栄養を記録し、睡眠と健康状態をモニタリングして、日々のトレーニング内容を調整します。ランニング、食生活の改善、習慣作りなど、どんな目標でもMuseがしっかりサポートします。\n\nショッピングとお得な情報\nMuseは、価格を比較し、値下がりを追跡して、欲しい商品がセールになった瞬間に通知します。あなたの許可があれば、代わりに買い物までしてくれるAI搭載のショッピングアシスタントです。\n\nアプリの連携\nMuseがどの情報にアクセスできるかは、あなたがコントロール。メール、カレンダー、Instagram、Facebook、ヘルスケア・フィットネスのデータ、家計管理アプリなどと連携できます。アクションの実行前には、必ずあなたの承認が必要です。連携するたびに、Museはさらに賢く成長します。\n\n最初から最後までタスクをお任せ\nリサーチ、比較検討、やり取り、予約など、タスク全体をMuseに任せれば、最後までやり遂げてくれます。車をより高く売りたい、請求額が安くなるよう交渉したい、旅行の計画と予約をすべて済ませたいといったリクエストにも対応。自分一人でやるよりも、より良い結果が得られるでしょう。\n\nあなたのために常時稼働\nアプリを閉じている間も、Museはタスクを進め続けます。状況を常に把握し、フォローアップを行い、あなたの確認が必要なときには通知を送るため、見落としの心配がありません。\n\n主導権はあなたに\nアクションの実行前には、必ずあなたの承認が必要です。Museは完全なアクティビティログを保持しており、どのアプリとの連携もいつでも解除できます。\n\nあなただけのカスタマイズ\nMuseに名前を付け、話し方をカスタマイズして、自分だけのパーソナルエージェントに仕上げましょう。\n\n賢いけれど、常に学習中\nMuseは不正確な情報を提供したり、予期せぬ行動をとったりすることがあります。適宜チェックし、必要に応じて軌道修正してください。"
+        },
+        "im:price": {
+          "label": "入手",
+          "attributes": {
+            "amount": "0",
+            "currency": "JPY"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "アプリケーション"
+          }
+        },
+        "rights": {
+          "label": "© 2026 Meta"
+        },
+        "title": {
+          "label": "Muse from Meta - Meta Platforms, Inc."
+        },
+        "link": [
+          {
+            "attributes": {
+              "rel": "alternate",
+              "type": "text/html",
+              "href": "https://apps.apple.com/jp/app/muse-from-meta/id6760173601?uo=2"
+            }
+          },
+          {
+            "im:duration": {
+              "label": "0"
+            },
+            "attributes": {
+              "title": "プレビュー",
+              "rel": "enclosure",
+              "type": "image/jpeg",
+              "href": "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/84/7a/3a/847a3a58-7cd3-d0e2-ce97-9df5394b7842/1_3.png/1024x1024bb.png",
+              "im:assetType": "preview"
+            }
+          }
+        ],
+        "id": {
+          "label": "https://apps.apple.com/jp/app/muse-from-meta/id6760173601?uo=2",
+          "attributes": {
+            "im:id": "6760173601",
+            "im:bundleId": "com.facebook.hatch"
+          }
+        },
+        "im:artist": {
+          "label": "Meta Platforms, Inc.",
+          "attributes": {
+            "href": "https://apps.apple.com/jp/developer/meta-platforms-inc/id284882218?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6007",
+            "term": "Productivity",
+            "scheme": "https://apps.apple.com/jp/genre/ios-%E4%BB%95%E4%BA%8B%E5%8A%B9%E7%8E%87%E5%8C%96/id6007?uo=2",
+            "label": "仕事効率化"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2026-10-22T00:00:00-07:00",
+          "attributes": {
+            "label": "2026年10月22日"
+          }
+        }
+      },
+      {
+        "im:name": {
+          "label": "ChatGPT"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/fb/80/03/fb80039a-f8c2-f1ca-4fbd-7f9d77909b03/AppIcon-0-0-1x_U007epad-0-0-0-1-0-85-220.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/fb/80/03/fb80039a-f8c2-f1ca-4fbd-7f9d77909b03/AppIcon-0-0-1x_U007epad-0-0-0-1-0-85-220.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/fb/80/03/fb80039a-f8c2-f1ca-4fbd-7f9d77909b03/AppIcon-0-0-1x_U007epad-0-0-0-1-0-85-220.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "iOS 版 ChatGPT のご紹介: OpenAI の最新技術をあなたの手元に。\n\nこの公式アプリは無料で、ユーザーの履歴をデバイス間で同期し、画像生成機能を含む OpenAI の最新機能を提供します。\n\nいつでも使える ChatGPT があれば、次のことができます。\n\n· 画像生成 – 説明文からオリジナル画像を生成したり、既存の画像をいくつかの単語で変換したりできます。  \n· 高度な音声モード – 音声アイコンをタップして、移動中でもリアルタイムで会話が可能。食事の場での議論を解決したり、新しい言語を練習したりできます。  \n· 写真のアップロード – 写真を撮影またはアップロードして、手書きのレシピを書き起こしたり、観光地に関する情報を入手したりできます。  \n· 創造的なインスピレーション – 誕生日のプレゼントアイデアを探したり、パーソナライズされたグリーティングカードを作成したりできます。  \n· 個別アドバイス – 難しい状況について話し合ったり、詳細な旅行プランを依頼したり、完璧な返信の作成をサポートしてもらえます。  \n· パーソナライズされた学習 – 恐竜好きの子どもに電気について説明したり、歴史的な出来事を簡単に復習したりできます。  \n· 専門的なサポート – マーケティング用のコピーをブレインストーミングしたり、ビジネスプランを立てたりできます。  \n· 即時回答 – 少ない材料で作れるレシピを提案してもらうことができます。\n\n世界中で何億人ものユーザーが利用するこのアプリをぜひ体験してください。今すぐChatGPTをダウンロード。\n\n利用規約とプライバシーポリシー:  \nhttps://openai.com/policies/terms-of-use  \nhttps://openai.com/policies/privacy-policy"
+        },
+        "im:price": {
+          "label": "入手",
+          "attributes": {
+            "amount": "0",
+            "currency": "JPY"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "アプリケーション"
+          }
+        },
+        "rights": {
+          "label": "© 2026 OpenAI OpCo L.L.C."
+        },
+        "title": {
+          "label": "ChatGPT - OpenAI OpCo, LLC"
+        },
+        "link": [
+          {
+            "attributes": {
+              "rel": "alternate",
+              "type": "text/html",
+              "href": "https://apps.apple.com/jp/app/chatgpt/id6448311069?uo=2"
+            }
+          },
+          {
+            "im:duration": {
+              "label": "0"
+            },
+            "attributes": {
+              "title": "プレビュー",
+              "rel": "enclosure",
+              "type": "image/jpeg",
+              "href": "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/69/c7/78/69c778c0-6798-03c5-e9e5-c371ae18e9be/ja-JP_1_iPad.jpg/1024x1024bb.jpg",
+              "im:assetType": "preview"
+            }
+          }
+        ],
+        "id": {
+          "label": "https://apps.apple.com/jp/app/chatgpt/id6448311069?uo=2",
+          "attributes": {
+            "im:id": "6448311069",
+            "im:bundleId": "com.openai.chat"
+          }
+        },
+        "im:artist": {
+          "label": "OpenAI OpCo, LLC",
+          "attributes": {
+            "href": "https://apps.apple.com/jp/developer/openai-opco-llc/id1684349733?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6007",
+            "term": "Productivity",
+            "scheme": "https://apps.apple.com/jp/genre/ios-%E4%BB%95%E4%BA%8B%E5%8A%B9%E7%8E%87%E5%8C%96/id6007?uo=2",
+            "label": "仕事効率化"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2023-05-25T00:00:00-07:00",
+          "attributes": {
+            "label": "2023年5月25日"
+          }
+        }
+      }
+    ],
+    "updated": {
+      "label": "2026-11-16T06:51:18-07:00"
+    },
+    "rights": {
+      "label": "Copyright 2008 Apple Inc."
+    },
+    "title": {
+      "label": "iTunes Store: トップ無料アプリ"
+    },
+    "icon": {
+      "label": "http://itunes.apple.com/favicon.ico"
+    },
+    "link": [
+      {
+        "attributes": {
+          "rel": "alternate",
+          "type": "text/html",
+          "href": "https://itunes.apple.com/WebObjects/MZStore.woa/wa/viewTop?cc=jp&id=1000&popId=96"
+        }
+      },
+      {
+        "attributes": {
+          "rel": "self",
+          "href": "https://itunes.apple.com/jp/rss/topfreeapplications/limit=2/json"
+        }
+      }
+    ],
+    "id": {
+      "label": "https://itunes.apple.com/jp/rss/topfreeapplications/limit=2/json"
+    }
+  }
+}

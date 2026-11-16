@@ -5,7 +5,6 @@
 //  Created by 塚田良輝 on 2019/12/28.
 //
 
-import AppData
 import Domain
 import UIKit
 
@@ -47,9 +46,15 @@ class AppsSearchVC: BaseViewController {
     func fetchSearchResults() {
         guard let text else { return }
 
-        GetSearchResults(term: text).execute(in: .background).then(in: .main) { [weak self] searchResults in
-            self?.data.resultApps = searchResults
-            self?.collectionView.reloadData()
+        let useCase = CompositionRoot.searchAppsUseCase
+        Task { [weak self] in
+            do {
+                let searchResults = try await useCase.execute(term: text)
+                await MainActor.run {
+                    self?.data.resultApps = searchResults
+                    self?.collectionView.reloadData()
+                }
+            } catch {}
         }
     }
 }

@@ -3,7 +3,6 @@ import Domain
 import Foundation
 
 /// Application composition root. Wires AppData implementations to Domain protocols.
-/// Controllers still call legacy `Get*` APIs in Phase 1; migrate them to these use cases in Phase 2–3.
 enum CompositionRoot {
     static let appsGroupRepository: AppsGroupRepository = DefaultAppsGroupRepository()
     static let appDetailsRepository: AppDetailsRepository = DefaultAppDetailsRepository()

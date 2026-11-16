@@ -7,7 +7,7 @@ public final class FetchReviewsUseCase {
         self.repository = repository
     }
 
-    public func execute(appID: String, completion: @escaping (Result<[Review], Error>) -> Void) {
-        repository.fetchReviews(appID: appID, completion: completion)
+    public func execute(appID: String) async throws -> [Review] {
+        try await repository.fetchReviews(appID: appID)
     }
 }
